@@ -57,11 +57,21 @@
 		<script>
 		// Initialize Data
 		//
-		$(document).ready(function(){
-			var values = data.initData();
-			var goalArray = values[0];
-			var chartData = "";
-			var ontarget = values[1];
+
+    $(document).ready(function(){
+			var ontarget = 0;
+			if(localStorage.getItem("data") === null || localStorage.getItem("ontarget") === null) {
+				var goalArray = [];
+				var values = data.initData();
+				var goalArray = values[0];
+				var chartData = "";
+				ontarget = values[1];
+				localStorage.setItem("data",JSON.stringify(goalArray));
+				localStorage.setItem("ontarget",ontarget.toString())
+			} else {
+				var goalArray = JSON.parse(localStorage.getItem("newData"));
+				ontarget = data.newOnTarget(goalArray);
+			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
 			data.computeContent(goalArray);
@@ -71,7 +81,7 @@
 				console.log(i);
 				visuals.newChart(goalArray[i]['id']);
 				i++;
-				if(i == goalArray.length-1) {
+				if(i == goalArray.length) {
 					i = 0;
 				}
 			});
@@ -80,15 +90,9 @@
 		</script>
 </head>
 <body>
-
+<!-- The Sidebar navigation -->
 <div class="wrapper">
     <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    <!--
-		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-	-->
-
     	<div class="sidebar-wrapper">
             <div class="logo">
 							<img src="assets/img/logo.png" />
@@ -101,28 +105,51 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+								<li>
+									<h1>August</h1>
+									<table>
+										<tr>
+											<th>All People Trust Government</th>
+										</tr>
+										<tr>
+											<td>
+												<ol style="list-style-type:disc">
+													<li>Performance Management Report</li>
+													<li>Presentation: IT Reorganization Update</li>
+													<li>Presentation: Infrastructure for All Update</li>
+													<li>Presentation: Customer Service Program and Training Update</li>
+													<li>Approval: HR Pay for Performance Model</li>
+												</ol>
+											</td>
+										</tr>
+									</table>
+								</li>
+								<li class="active-pro">
+									<a href="assets/pages/selection.html">
+										<i class="ti-settings"></i>
+										<p></p>
+									</a>
+								</li>
             </ul>
-						<h1>August</h1>
-						<table>
-							<tr>
-								<th>All People Trust Government</th>
-							</tr>
-							<tr>
-								<td>
-									<ol style="list-style-type:disc">
-										<li>Performance Management Report</li>
-										<li>Presentation: IT Reorganization Update</li>
-										<li>Presentation: Infrastructure for All Update</li>
-										<li>Presentation: Customer Service Program and Training Update</li>
-										<li>Approval: HR Pay for Performance Model</li>
-									</ol>
-								</td>
-							</tr>
-						</table>
     	</div>
     </div>
 
     <div class="main-panel">
+			<!--Display the hamburger menu on mobile-->
+			<nav class="navbar navbar-default">
+							<div class="container-fluid">
+									<div class="navbar-header">
+											<button type="button" class="navbar-toggle">
+													<span class="sr-only">Toggle navigation</span>
+													<span class="icon-bar bar1"></span>
+													<span class="icon-bar bar2"></span>
+													<span class="icon-bar bar3"></span>
+											</button>
+									</div>
+									<div class="collapse navbar-collapse">
+									</div>
+							</div>
+					</nav>
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -218,6 +245,4 @@
 
 
 </body>
-
-
 </html>

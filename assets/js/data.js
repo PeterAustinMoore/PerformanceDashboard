@@ -11,63 +11,89 @@ data = {
           async: false,
           dataType: 'json',
           success: function(data) {
-            console.log(data);
+            // Goals are messy and do not return all values or even consistent fields
+            // Constants for all goals
             goalInfo["id"] = data["id"];
             goalInfo["name"] = data["name"];
             goalInfo["category"] = category;
             goalInfo["dashboard"] = dashboard;
-            try{
+            goalInfo["url"] = g_url;
+
+            // Get the summary of the goal
+            try {
               goalInfo["summary"] = data["prevailing_measure"]["name"];
-              goalInfo["target"] = data["prevailing_measure"]["target"];
+            } catch(e) {
+              goalInfo["summary"] = data["name"];
+            }
+            // Get the Unit
+            try {
               goalInfo["unit"] = data["prevailing_measure"]["unit"];
+            } catch(e) {
+              goalInfo["unit"] = "";
+            }
+            // Get the updated date, if none, set to empty string
+            try {
               goalInfo["updated"] = data["prevailing_measure"]["computed_values"]["metric"]["as_of"].substring(0,10);
+            } catch(e) {
+              goalInfo["updated"] = "";
+            }
+            // Get Current Value
+            try {
               goalInfo["current_value"] = data["prevailing_measure"]["computed_values"]["metric"]["current_value"];
+            } catch(e) {
+              goalInfo["current_value"] = "N/A";
+            }
+            // Get the target
+            try {
+              goalInfo["target"] = data["prevailing_measure"]["target"]
+            } catch(e) {
+              goalInfo["target"] = 0
+            }
+            // Get Measure Data
+            try {
               var measure = data["prevailing_measure"]["computed_values"]["progress"]["progress"];
               if(measure == "good" || measure == "within_tolerance") {
                 goalInfo["ontarget"] = 1;
               }
+            } catch(e) {
+              goalInfo["ontarget"] = 0;
+            }
+
+            // Get the goal estimated Values
+            try {
+              goalInfo["X_Est"] = Date.parse(data["prevailing_measure"]["end"])
               goalInfo["Y_Est"] = data["prevailing_measure"]["computed_values"]["progress"]["prediction"]["estimated"];
               goalInfo["Y_High_Pred"] = data["prevailing_measure"]["computed_values"]["progress"]["prediction"]["pred_conf_int_high"]
               goalInfo["Y_Low_Pred"] = data["prevailing_measure"]["computed_values"]["progress"]["prediction"]["pred_conf_int_low"]
-              goalInfo["X_Est"] = Date.parse(data["prevailing_measure"]["end"])
-
-              goalInfo["Y"] = data["prevailing_measure"]["computed_values"]["metric"]["values"]
-              goalInfo["X"] = data["prevailing_measure"]["computed_values"]["metric"]["date_values"]
-              try{
-                goalInfo["target"] = data["prevailing_measure"]["target"]
-              } catch(e) {
-                goalInfo["target"] = 0
-              }
-
-            } catch (err) {
-              var today = new Date();
-              var dd = today.getDate();
-              var mm = today.getMonth()+1; //January is 0!
-              var yyyy = today.getFullYear();
-              goalInfo["ontarget"] = 0;
-              goalInfo["current_value"] = "N/A";
-              goalInfo["updated"] = yyyy+"-"+mm+"-"+dd;
-              goalInfo["target"] = "";
-              goalInfo["unit"] = "";
-              goalInfo["summary"] = "";
+            } catch(e) {
+              goalInfo["X_Est"] = "";
               goalInfo["Y_Est"] = 0;
-              goalInfo["Y_High_Pred"] = 0
-              goalInfo["Y_Low_Pred"] = 0
-              goalInfo["X_Est"] = Date.parse(goalInfo["updated"])
-
-              goalInfo["Y"] = 0
-              goalInfo["X"] = Date.parse(data["created_at"])
-
-              goalInfo["target"] = 0
+              goalInfo["Y_High_Pred"] = 0;
+              goalInfo["Y_Low_Pred"] = 0;
+            }
+            // Get the current graph values
+            try {
+              goalInfo["data"] = [];
+              for(var m=0;m<data["prevailing_measure"]["computed_values"]["metric"]["date_values"].length; m++) {
+                var t = {"y": goalInfo["target"], "x": new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))};
+                var d = {"y": data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
+                         "x": new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))
+                       };
+                goalInfo["data"].push(d);
+                goalInfo["target_data"].push(t);
+              }
+            } catch(e) {
+              goalInfo["Y"] = [0];
+              goalInfo["X"] = [0];
             }
           }
         });
-        return goalInfo;
+      return goalInfo;
     }
     function getGoals(base, d_id, dashboard) {
       var d_url = base + "/api/stat/v1/dashboards/" + d_id + ".json";
       var ontarget = 0;
-      var goalArray = Array()
+      var goalArray = [];
       $.ajax({
           url: d_url,
           async: false,
@@ -113,6 +139,17 @@ data = {
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();
     },
+    newOnTarget: function(goalArray) {
+      var ontarget = 0;
+      for(i in goalArray) {
+        try {
+          ontarget += goalArray[i]["ontarget"];
+        } catch(e) {
+          ontarget += 0;
+        }
+      }
+      return ontarget;
+    },
     computeCount: function(goalArray) {
       document.getElementById("goals").innerHTML = "<p>Goals</p>"+goalArray.length.toString();
     },
@@ -130,7 +167,6 @@ data = {
       }
 
       var tiles = "";
-      console.log(goalInfo);
       for(var i in goalInfo) {
         var goalTile = i == 0 ?
           '<div class="item active">' :
@@ -199,5 +235,38 @@ data = {
           tiles += goalTile;
         }
         document.getElementById("blocks").innerHTML = tiles;
+    },
+    selectionContent: function(r) {
+      t = '<fieldset data-role="controlgroup">';
+      var map = {}
+      for(var i = 0; i < r.length; i++){
+        var obj = r[i]
+        if(!(obj.dashboard in map)){
+          map[obj.dashboard] = {};
+        }
+        if(!(obj.category in map[obj.dashboard])) {
+            map[obj.dashboard][obj.category] = []
+          }
+      }
+      for(var i = 0; i < r.length; i++) {
+        var obj = r[i];
+        map[obj.dashboard][obj.category].push(obj);
+      }
+      for(k in map) {
+        template = '<div data-role="collapsible"><h1>'+k+'</h1><p><a href="#" class="category" name="'+ k.replace(/\W+/g,"-") +'" data-role="button">Select All</a></p>';
+        for(c in map[k]) {
+            var cat = '<div data-role="collapsible" data-filter="true" data-input="#filterable"><h1>' + c + '</h1>';
+            template += cat;
+            for(g in map[k][c]) {
+              goal = '<label><input id="'+map[k][c][g]["id"]+'" class="goalcheck '+k.replace(/\W+/g,"-")+'" type="checkbox" name="goal" value=\''+ JSON.stringify(map[k][c][g])+ '\'/>' + map[k][c][g]["name"] + "</label>" ;
+              template += goal;
+            }
+            template += "</div>";
+          }
+        template += "</div>";
+        t += template;
+      }
+      t += "</fieldset>";
+      document.getElementById("blocks").innerHTML = t;
     }
   };
