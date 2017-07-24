@@ -67,13 +67,19 @@
 						});
 				$("#goalForm").submit(function(){
 					var formData = $("#goalForm").serializeArray();
-					newGoals = [];
-
-					for(i in formData) {
-						var dd = JSON.parse(formData[i]['value']);
-						newGoals.push(dd);
+					var all = $( ".goalcheck" ).checkboxradio( "option", "disabled" );
+					if(all) {
+						var newGoals = localStorage.getItem("data")
+						localStorage.setItem("newData",newGoals);
+					} else {
+						var newGoals = [];
+						for(i in formData) {
+							var dd = JSON.parse(formData[i]['value']);
+							newGoals.push(dd);
+						}
+						localStorage.setItem("newData",JSON.stringify(newGoals));
 					}
-					localStorage.setItem("newData",JSON.stringify(newGoals));
+
 				});
 			});
 		</script>
