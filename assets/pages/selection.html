@@ -45,18 +45,23 @@
 				var m = JSON.parse(localStorage.getItem("data"));
 				data.selectionContent(m);
 				$("#selectall").click(function(){
-						$( ".goalcheck" ).checkboxradio( "option", "disabled", true );
+					console.log("test");
+						//$( "input[type='checkbox']" ).checkboxradio( "option", "icon", false );
+						$( "input[type='checkbox']" ).prop("checked",true);
+						$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				$("#selectsubset").click(function(){
-						$( ".goalcheck" ).checkboxradio("enable");
+						$( "input[type='checkbox']" ).prop("checked",false);
+						$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				$(".category").click(function(e){
-					var disabled = $( "."+e["currentTarget"]["name"] ).checkboxradio( "option", "disabled" );
-					if(disabled) {
-						$("."+e["currentTarget"]["name"]).checkboxradio("enable");
+					var checked = $( "input[type='checkbox']."+e["currentTarget"]["name"] ).is( ":checked" );
+					if(checked) {
+						$("input[type='checkbox']."+e["currentTarget"]["name"]).prop( "checked", false );
 					} else {
-						$("."+e["currentTarget"]["name"]).checkboxradio( "option", "disabled", true );
+						$("input[type='checkbox']."+e["currentTarget"]["name"]).prop( "checked", true );
 					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				//$("#filterable").attr("data-type","search");
 				$(".backtodash").click(function(){
@@ -71,6 +76,7 @@
 					if(all) {
 						var newGoals = localStorage.getItem("data")
 						localStorage.setItem("newData",newGoals);
+						console.log($('input[type=checkbox]:disabled').value);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
@@ -155,8 +161,8 @@
             <div class="container-fluid">
 							<div class="row">
 								<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
-									<a href="#" id="selectsubset" data-role="button" data-icon="minus">Select Subset</a>
 									<a href="#" id="selectall" data-role="button" data-icon="plus">Select All</a>
+									<a href="#" id="selectsubset" data-role="button" data-icon="minus">Select None</a>
 								</div>
 							</div>
 

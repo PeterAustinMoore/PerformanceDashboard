@@ -253,7 +253,7 @@ data = {
         map[obj.dashboard][obj.category].push(obj);
       }
       for(k in map) {
-        template = '<div data-role="collapsible"><h1>'+k+'</h1><p><a href="#" class="category" name="'+ k.replace(/\W+/g,"-") +'" data-role="button">Select All</a></p>';
+        template = '<div data-role="collapsible"><h1>'+k+'</h1><p><a href="#" class="category" name="'+ k.replace(/\W+/g,"-") +'" data-role="button">Select All Categories</a></p>';
         for(c in map[k]) {
             var cat = '<div data-role="collapsible" data-filter="true" data-input="#filterable"><h1>' + c + '</h1>';
             template += cat;
