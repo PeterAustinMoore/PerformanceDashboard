@@ -34,6 +34,8 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
   <meta name="viewport" content="width=device-width" />
 
+  <!-- JQuery Mobile core CSS -->
+  <link rel="stylesheet" href="../css/jquery.mobile-1.4.5.min.css">
 
   <!-- Bootstrap core CSS     -->
   <link href="../css/bootstrap.min.css" rel="stylesheet" />
@@ -43,7 +45,6 @@
 
   <!--  Paper Dashboard core CSS    -->
   <link href="../css/paper-dashboard.css" rel="stylesheet"/>
-
 
   <!--  CSS for Demo Purpose, don't include it in your project     -->
   <link href="../css/dashboard.css" rel="stylesheet" />
@@ -58,8 +59,18 @@
     $(document).ready(function(){
       var goalArray = cacheJS.get("newData");
       data.computeContentBoard(goalArray);
+      // Override the JQuery/Bootstrap mixup
+      $(".backtodash").click(function(){
+          $("#goalForm").submit();
+          window.location.href='../../index.html';
+
+        });
+      $(".logo").click(function(){
+          window.location.href='../../index.html';
+        });
 		});
 	</script>
+  <script src="../js/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <body>
 <!-- The Sidebar navigation -->
@@ -69,6 +80,7 @@
             <div class="logo">
 							<img src="../img/logo.png" />
             </div>
+
             <ul class="nav">
                 <li class="active">
                     <a href="index.html">
@@ -118,6 +130,9 @@
     					</button>
     			</div>
     			<div class="collapse navbar-collapse">
+            <div class="col-md-4">
+              <button class="backtodash" data-role="button" data-icon="arrow-l">Back to Dashboard</a>
+            </div>
     			</div>
     	</div>
     </nav>
