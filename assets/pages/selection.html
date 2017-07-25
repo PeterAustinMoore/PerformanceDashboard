@@ -7,19 +7,23 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-
+		<!-- Core JS -->
+		<script src="../js/jquery-1.11.3.min.js"></script>
+		<script src="../js/bootstrap.min.js" type="text/javascript"></script>
 
     <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 		<script src="../js/paper-dashboard.js"></script>
 
+		<!-- Custom JS to retrieve and reset Data -->
+		<script src="../js/data.js"></script>
 
 	<title>Performance Management Dashboard</title>
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
+		<!-- JQuery Mobile core CSS -->
+		<link rel="stylesheet" href="../css/jquery.mobile-1.4.5.min.css">
 
     <!-- Bootstrap core CSS     -->
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
@@ -30,28 +34,29 @@
     <!--  Paper Dashboard core CSS    -->
     <link href="../css/paper-dashboard.css" rel="stylesheet"/>
 
-    <link href="../css/demo.css" rel="stylesheet" />
-
+    <link href="../css/dashboard.css" rel="stylesheet" />
 
     <!--  Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href="../css/themify-icons.css" rel="stylesheet">
-		<script src="../js/data.js"></script>
+
 		<script>
 			$(document).ready(function(){
 				var m = JSON.parse(localStorage.getItem("data"));
 				data.selectionContent(m);
+
+				// Select All Goals
 				$("#selectall").click(function(){
-					console.log("test");
-						//$( "input[type='checkbox']" ).checkboxradio( "option", "icon", false );
 						$( "input[type='checkbox']" ).prop("checked",true);
 						$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
+				// Deselect all goals
 				$("#selectsubset").click(function(){
 						$( "input[type='checkbox']" ).prop("checked",false);
 						$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
+				// Select all goals in a dashboard
 				$(".category").click(function(e){
 					var checked = $( "input[type='checkbox']."+e["currentTarget"]["name"] ).is( ":checked" );
 					if(checked) {
@@ -61,13 +66,16 @@
 					}
 					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
-				//$("#filterable").attr("data-type","search");
+				// Override the JQuery/Bootstrap mixup
 				$(".backtodash").click(function(){
+						$("#goalForm").submit();
+						window.location.href='../../index.html';
+
+					});
+				$(".logo").click(function(){
 						window.location.href='../../index.html';
 					});
-					$(".logo").click(function(){
-							window.location.href='../../index.html';
-						});
+				// Refresh the goal data on Form Submit
 				$("#goalForm").submit(function(){
 					var formData = $("#goalForm").serializeArray();
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
@@ -83,13 +91,11 @@
 						}
 						localStorage.setItem("newData",JSON.stringify(newGoals));
 					}
-
 				});
 			});
 		</script>
+		<script src="../js/jquery.mobile-1.4.5.min.js"></script>
 
-		<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-		<script src="../js/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -137,7 +143,7 @@
       </div>
 
     <div class="main-panel">
-		<nav class="navbar navbar-default">
+			<nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle">
@@ -157,26 +163,36 @@
 
         <div class="content">
             <div class="container-fluid">
-							<div class="row">
-								<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
-									<a href="#" id="selectall" data-role="button" data-icon="plus">Select All</a>
-									<a href="#" id="selectsubset" data-role="button" data-icon="minus">Select None</a>
-								</div>
-							</div>
-
 							<form>
 								<input type="text" id="filterable" data-type="search" autocomplete="off">
 							</form>
 
-
 							<form action="javascript:void(0);" method="post" name="newGoals" id="goalForm">
 								<input type="submit" value="Save" />
-
-
+								<div class="row">
+									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
+										<a href="#" id="selectall" data-role="button" data-icon="plus">Select All</a>
+										<a href="#" id="selectsubset" data-role="button" data-icon="minus">Select None</a>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-md-12" id="blocks">
 									</div>
 								</div>
+								<script>
+								$(document).ready(function(){
+										$("#filtered").on( "filterablefilter", function( event, ui ) {
+													$(".category").hide()
+													$(".searchResults").collapsible("option","collapsed",false);
+													var numSearch = $('input[data-type="search"]').val()
+													if(numSearch.length === 0) {
+														$(".category").show();
+														$(".searchResults").collapsible("option","collapsed",true);
+													}
+											});
+										});
+
+								</script>
 							</form>
             </div>
         </div>
@@ -191,19 +207,7 @@
                 </div>
             </div>
         </footer>
-
-
     </div>
 </div>
-
-
 </body>
-    <!--   Core JS Files
-    <script src="../js/jquery-1.10.2.js" type="text/javascript"></script>-->
-
-
-	<!--  Checkbox, Radio & Switch Plugins
-	<script src="../js/bootstrap-checkbox-radio.js"></script>-->
-
-
 </html>

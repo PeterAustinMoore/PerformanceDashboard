@@ -242,7 +242,7 @@ data = {
         document.getElementById("blocks").innerHTML = tiles;
     },
     selectionContent: function(r) {
-      t = '<fieldset data-role="controlgroup">';
+      t = '<fieldset id="page" data-role="controlgroup">';
       var map = {}
       for(var i = 0; i < r.length; i++){
         var obj = r[i]
@@ -258,20 +258,74 @@ data = {
         map[obj.dashboard][obj.category].push(obj);
       }
       for(k in map) {
-        template = '<div data-role="collapsible"><h1>'+k+'</h1><p><a href="#" class="category" name="'+ k.replace(/\W+/g,"-") +'" data-role="button">Select All Categories</a></p>';
+        template = '<div data-role="collapsible" class="searchResults"><h1>'+k+'</h1><p><a href="#" class="category" name="'+ k.replace(/\W+/g,"-") +'" data-role="button">Select All Categories</a></p>';
         for(c in map[k]) {
-            var cat = '<div data-role="collapsible" data-filter="true" data-input="#filterable"><h1>' + c + '</h1>';
+            var cat = '<div data-role="collapsible" class="searchResults" data-role="listview" data-filter="true" data-input="#filterable"><h1>' + c + '</h1><div id="filtered" data-role="listview" data-filter="true" data-input="#filterable">';
             template += cat;
             for(g in map[k][c]) {
               goal = '<label><input id="'+map[k][c][g]["id"]+'" class="goalcheck '+k.replace(/\W+/g,"-")+'" type="checkbox" name="goal" value=\''+ JSON.stringify(map[k][c][g])+ '\'/>' + map[k][c][g]["name"] + "</label>" ;
               template += goal;
             }
-            template += "</div>";
+            template += "</div></div>";
           }
         template += "</div>";
         t += template;
       }
       t += "</fieldset>";
       document.getElementById("blocks").innerHTML = t;
+    },
+    computeContentBoard: function(goalInfo) {
+      function addCommas(nStr) {
+          nStr += '';
+          if(nStr == 'NaN') {
+            return 'N/A';
+          }
+          var x = nStr.split('.');
+          var x1 = x[0];
+          var x2 = x.length > 1 ? '.' + x[1] : '';
+          var rgx = /(\d+)(\d{3})/;
+          while (rgx.test(x1)) {
+              x1 = x1.replace(rgx, '$1' + ',' + '$2');
+          }
+          return x1 + x2;
+      }
+
+      var tiles = '<div class="row">';
+      for(var i in goalInfo) {
+        goalTile=
+        `  <div class="col-md-3">
+                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
+                    <div class="header">
+                      <h3 class="title">`+goalInfo[i]["name"]+`</h3>
+                    </div>
+                    <div class="content">
+                      <div id="current_value">
+                        `;
+                        if(goalInfo[i]["unit"] == "percent") {
+                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                          goalTile += value === 'N/A' ? value : value + "%";
+                        }
+                        else {
+                          goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
+                        }
+          goalTile += `
+                      </div>
+                      <div class="footer">
+                          <div class="chart-legend">
+                              <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`
+                          </div>
+                          <hr>
+                          <div class="stats">
+                              <i class="ti-calendar"></i>`+goalInfo[i]["updated"]+`
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                `;
+          tiles += goalTile;
+        }
+        tiles += '</div>'
+        document.getElementById("blocks").innerHTML = tiles;
     }
   };

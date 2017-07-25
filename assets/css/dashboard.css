@@ -5,6 +5,9 @@
 #dashboard, #category {
   background: #68B3C9;
 }
+input[type="submit"] {
+  background: #00f8fc;
+}
 .logo img {
   margin: 0 auto;
   height:150px;
@@ -103,6 +106,9 @@ table {
 ul h1 {
   margin-left:10px;
 }
+#measure-1, #measure-0 {
+  height: 300px;
+}
 #measure-1 .header {
   background: #56ef9a;
 }
@@ -110,7 +116,7 @@ ul h1 {
   background: #ef5656;
 }
 #current_value {
-  height:200px;
+  height:100%;
   font-weight: bold;
   font-size: 80px;
   font-size: 3vw;
