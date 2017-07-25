@@ -13,7 +13,7 @@
 
     <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 		<script src="../js/paper-dashboard.js"></script>
-
+		<script src="../js/cacheJS.js"></script>
 		<!-- Custom JS to retrieve and reset Data -->
 		<script src="../js/data.js"></script>
 
@@ -43,7 +43,7 @@
 
 		<script>
 			$(document).ready(function(){
-				var m = JSON.parse(localStorage.getItem("data"));
+				var m = cacheJS.get("data");
 				data.selectionContent(m);
 
 				// Select All Goals
@@ -81,15 +81,15 @@
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
-						var newGoals = localStorage.getItem("data")
-						localStorage.setItem("newData",newGoals);
+						var newGoals = cacheJS.get("data")
+						cacheJS.set("newData",newGoals);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
 							var dd = JSON.parse(formData[i]['value']);
 							newGoals.push(dd);
 						}
-						localStorage.setItem("newData",JSON.stringify(newGoals));
+						cacheJS.set("newData",newGoals);
 					}
 				});
 			});

@@ -46,28 +46,16 @@ visuals = {
         };
 
         Chartist.Bar('#chart', budget, budgetOptions);
-        var cleanData = [];
-        var cleanTarget = [];
-        for(i in d) {
-          nd = {x: Date.parse(d[i].x), y: d[i].y}
-          try{
-            nt = {x: Date.parse(t[i].x), y: t[i].y}
-          } catch(e) {
-            nt = {}
-          }
-          cleanData.push(nd);
-          cleanTarget.push(nt);
-        }
 
         var data = {
               series: [
                 {
                   name: 'series-1',
-                  data: cleanData
+                  data: d
                 },
                 {
                   name: 'target',
-                  data: cleanTarget
+                  data: t
                 }
               ]
             };
@@ -88,27 +76,15 @@ visuals = {
 
     },
     newChart: function(d, t, goalId) {
-      var cleanData = [];
-      var cleanTarget = [];
-      for(i in d) {
-        nd = {x: Date.parse(d[i].x), y: d[i].y}
-        try {
-          nt = {x: Date.parse(t[i].x), y: t[i].y}
-        } catch(e) {
-          nt = {}
-        }
-        cleanData.push(nd);
-        cleanTarget.push(nt);
-      }
       var data = {
             series: [
               {
                 name: 'series-1',
-                data: cleanData
+                data: d
               },
               {
                 name: 'target',
-                data: cleanTarget
+                data: t
               }
             ]
           };

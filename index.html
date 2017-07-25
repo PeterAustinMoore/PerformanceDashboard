@@ -14,6 +14,9 @@
 	<!--  Checkbox, Radio & Switch Plugins -->
 	<script src="assets/js/bootstrap-checkbox-radio.js"></script>
 
+  <!-- Moment JS for rendering timeline charts -->
+  <script src="assets/js/moment.js" type="text/javascript"></script>
+
 	<!--  Charts Plugin -->
 	<script src="assets/js/chartist.min.js"></script>
 
@@ -23,9 +26,7 @@
   <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 	<script src="assets/js/paper-dashboard.js"></script>
 
-  <!-- Moment JS for rendering timeline charts -->
-  <script src="assets/js/moment.js" type="text/javascript"></script>
-
+  <script src="assets/js/cacheJS.js"></script>
   <!-- Custom JS to retrieve data and visualize it -->
   <script src="assets/js/visuals.js"></script>
 	<script src="assets/js/data.js"></script>
@@ -56,18 +57,18 @@
   <link href="assets/css/themify-icons.css" rel="stylesheet">
 
 	<script>
+
     $(document).ready(function(){
-			var ontarget = 0;
-			if(localStorage.getItem("data") === null || localStorage.getItem("ontarget") === null) {
+			if(cacheJS.get("data") === null) {
 				var goalArray = [];
 				var values = data.initData();
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
-				localStorage.setItem("data",JSON.stringify(goalArray));
+        cacheJS.set("data",goalArray);
 			} else {
-				var goalArray = JSON.parse(localStorage.getItem("newData"));
-				ontarget = data.newOnTarget(goalArray);
+        var goalArray = cacheJS.get("newData");
+        ontarget = data.newOnTarget(goalArray);
 			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
