@@ -72,12 +72,13 @@ data = {
               goalInfo["Y_Low_Pred"] = 0;
             }
             // Get the current graph values
+            goalInfo["data"] = [];
+            goalInfo["target_data"] = [];
             try {
-              goalInfo["data"] = [];
-              for(var m=0;m<data["prevailing_measure"]["computed_values"]["metric"]["date_values"].length; m++) {
-                var t = {"y": goalInfo["target"], "x": new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))};
-                var d = {"y": data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
-                         "x": new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))
+              for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
+                var t = {y: goalInfo["target"], x: new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))};
+                var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
+                         x: new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))
                        };
                 goalInfo["data"].push(d);
                 goalInfo["target_data"].push(t);
@@ -156,6 +157,9 @@ data = {
     computeContent: function(goalInfo) {
       function addCommas(nStr) {
           nStr += '';
+          if(nStr == 'NaN') {
+            return 'N/A';
+          }
           var x = nStr.split('.');
           var x1 = x[0];
           var x2 = x.length > 1 ? '.' + x[1] : '';
@@ -186,7 +190,8 @@ data = {
                       <div>
                         <h1 id="current_value">`;
                         if(goalInfo[i]["unit"] == "percent") {
-                          goalTile += addCommas(Math.round(goalInfo[i]["current_value"]).toString()) + "%";
+                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                          goalTile += value === 'N/A' ? value : value + "%";
                         }
                         else {
                           goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));

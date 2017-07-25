@@ -5,7 +5,11 @@
 #dashboard, #category {
   background: #68B3C9;
 }
-
+.logo img {
+  margin: 0 auto;
+  height:150px;
+  width:150px;
+}
 @media (min-width: 992px){
     .typo-line{
         padding-left: 140px;
@@ -93,6 +97,7 @@
     text-align: center;
 }
 table {
+  margin-left:10px;
   width:100%;
 }
 #measure-1 .header {

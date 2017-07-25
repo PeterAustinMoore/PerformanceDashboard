@@ -16,7 +16,7 @@ visuals = {
         });
     },
 
-    initChartist: function(goalId){
+    initChartist: function(d, t, goalId){
       var budget = {
               labels: ['Budget vs Actuals'],
               series: [
@@ -47,56 +47,54 @@ visuals = {
 
         Chartist.Bar('#chart', budget, budgetOptions);
         var data = {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          series: [
-            [null, null, 42, null, null, 62, null, null, 60, null, null, null],
-            [90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90],
-            [null, null, null, null, null, null, null, null, 60, null, null, 80],
-            [null, null, null, null, null, null, null, null, 60, null, null, 90],
-            [null, null, null, null, null, null, null, null, 60, null, null, 70]
-          ]
-        };
+              series: [
+                {
+                  name: 'series-1',
+                  data: d
+                },
+                {
+                  name: 'target',
+                  data: t
+                }
+              ]
+            };
 
         var options = {
-            fullWidth: true,
-            seriesBarDistance: 10,
             axisX: {
-                showGrid: true
-            },
-            low: 0,
-            height: "245px",
-            lineSmooth: Chartist.Interpolation.cardinal({
-                fillHoles: true
-            })
-        };
+              type: Chartist.FixedScaleAxis,
+              divisor: 5,
+              labelInterpolationFnc: function(value) {
+                return moment(value).format('MMM YYYY');
+              }
+            }
+          };
         var goal = '#goal-'+goalId;
-        console.log(goal);
         Chartist.Line(goal, data, options);
     },
-    newChart: function(goalId) {
+    newChart: function(d, t, goalId) {
+      console.log(d);
       var data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        series: [
-          [null, null, 42, null, null, 62, null, null, 60, null, null, null],
-          [90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90],
-          [null, null, null, null, null, null, null, null, 60, null, null, 80],
-          [null, null, null, null, null, null, null, null, 60, null, null, 90],
-          [null, null, null, null, null, null, null, null, 60, null, null, 70]
-        ]
-      };
+            series: [
+              {
+                name: 'series-1',
+                data: d
+              },
+              {
+                name: 'target',
+                data: t
+              }
+            ]
+          };
 
       var options = {
-          fullWidth: true,
-          seriesBarDistance: 10,
           axisX: {
-              showGrid: true
-          },
-          low: 0,
-          height: "245px",
-          lineSmooth: Chartist.Interpolation.cardinal({
-              fillHoles: true
-          })
-      };
+            type: Chartist.FixedScaleAxis,
+            divisor: 5,
+            labelInterpolationFnc: function(value) {
+              return moment(value).format('MMM YYYY');
+            }
+          }
+        };
 
       Chartist.Line("#goal-"+goalId, data, options);
     }

@@ -30,8 +30,6 @@
     <!--  Paper Dashboard core CSS    -->
     <link href="../css/paper-dashboard.css" rel="stylesheet"/>
 
-
-    <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="../css/demo.css" rel="stylesheet" />
 
 
@@ -72,11 +70,11 @@
 						});
 				$("#goalForm").submit(function(){
 					var formData = $("#goalForm").serializeArray();
-					var all = $( ".goalcheck" ).checkboxradio( "option", "disabled" );
-					if(all) {
+					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
+					var none = formData.length === 0 ? true : false;
+					if(all || none) {
 						var newGoals = localStorage.getItem("data")
 						localStorage.setItem("newData",newGoals);
-						console.log($('input[type=checkbox]:disabled').value);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
