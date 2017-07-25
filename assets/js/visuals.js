@@ -46,15 +46,28 @@ visuals = {
         };
 
         Chartist.Bar('#chart', budget, budgetOptions);
+        var cleanData = [];
+        var cleanTarget = [];
+        for(i in d) {
+          nd = {x: Date.parse(d[i].x), y: d[i].y}
+          try{
+            nt = {x: Date.parse(t[i].x), y: t[i].y}
+          } catch(e) {
+            nt = {}
+          }
+          cleanData.push(nd);
+          cleanTarget.push(nt);
+        }
+
         var data = {
               series: [
                 {
                   name: 'series-1',
-                  data: d
+                  data: cleanData
                 },
                 {
                   name: 'target',
-                  data: t
+                  data: cleanTarget
                 }
               ]
             };
@@ -66,22 +79,36 @@ visuals = {
               labelInterpolationFnc: function(value) {
                 return moment(value).format('MMM YYYY');
               }
-            }
+            },
+            low:0
           };
+
         var goal = '#goal-'+goalId;
         Chartist.Line(goal, data, options);
+
     },
     newChart: function(d, t, goalId) {
-      console.log(d);
+      var cleanData = [];
+      var cleanTarget = [];
+      for(i in d) {
+        nd = {x: Date.parse(d[i].x), y: d[i].y}
+        try {
+          nt = {x: Date.parse(t[i].x), y: t[i].y}
+        } catch(e) {
+          nt = {}
+        }
+        cleanData.push(nd);
+        cleanTarget.push(nt);
+      }
       var data = {
             series: [
               {
                 name: 'series-1',
-                data: d
+                data: cleanData
               },
               {
                 name: 'target',
-                data: t
+                data: cleanTarget
               }
             ]
           };
@@ -93,7 +120,8 @@ visuals = {
             labelInterpolationFnc: function(value) {
               return moment(value).format('MMM YYYY');
             }
-          }
+          },
+          low:0
         };
 
       Chartist.Line("#goal-"+goalId, data, options);

@@ -76,9 +76,9 @@ data = {
             goalInfo["target_data"] = [];
             try {
               for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
-                var t = {y: goalInfo["target"], x: new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))};
+                var t = {y: goalInfo["target"], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
                 var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
-                         x: new Date(Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]))
+                         x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
                        };
                 goalInfo["data"].push(d);
                 goalInfo["target_data"].push(t);
@@ -187,8 +187,8 @@ data = {
                       <h3 class="title">`+goalInfo[i]["name"]+`</h3>
                     </div>
                     <div class="content">
-                      <div>
-                        <h1 id="current_value">`;
+                      <div id="current_value">
+                        `;
                         if(goalInfo[i]["unit"] == "percent") {
                           var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
                           goalTile += value === 'N/A' ? value : value + "%";
@@ -196,7 +196,7 @@ data = {
                         else {
                           goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
                         }
-          goalTile += `</h1>
+          goalTile += `
                       </div>
                       <div class="footer">
                           <div class="chart-legend">

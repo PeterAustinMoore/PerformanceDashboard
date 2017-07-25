@@ -65,7 +65,6 @@
 				var chartData = "";
 				ontarget = values[1];
 				localStorage.setItem("data",JSON.stringify(goalArray));
-				localStorage.setItem("ontarget",ontarget.toString())
 			} else {
 				var goalArray = JSON.parse(localStorage.getItem("newData"));
 				ontarget = data.newOnTarget(goalArray);
