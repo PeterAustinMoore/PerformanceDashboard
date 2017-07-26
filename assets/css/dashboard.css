@@ -106,9 +106,6 @@ table {
 ul h1 {
   margin-left:10px;
 }
-#measure-1, #measure-0 {
-  height: 300px;
-}
 #measure-1 .header {
   background: #56ef9a;
 }
@@ -116,10 +113,5 @@ ul h1 {
   background: #ef5656;
 }
 #current_value {
-  height:100%;
-  font-weight: bold;
-  font-size: 80px;
-  font-size: 3vw;
-  max-height: 200px;
   text-align:center;
 }

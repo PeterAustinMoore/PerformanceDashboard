@@ -172,11 +172,8 @@ data = {
 
       var tiles = "";
       for(var i in goalInfo) {
-        var goalTile = i == 0 ?
-          '<div class="item active">' :
-          '<div class="item">'
-        goalTile+=
-        `<div class="row"><div class="col-md-12"><div class="card"><div class="content">
+        var goalTile =
+        `<div><div class="row"><div class="col-md-12"><div class="card"><div class="content">
           <h2>`+goalInfo[i]["dashboard"]+`</h2></div></div></div></div>
           <div class="row"><div class="col-md-12"><div class="card"><div class="content">
           <h3>`+goalInfo[i]["category"]+`</h3></div></div></div></div>
@@ -187,17 +184,21 @@ data = {
                       <h3 class="title">`+goalInfo[i]["name"]+`</h3>
                     </div>
                     <div class="content">
-                      <div id="current_value">
+                      <div id="current_value"><h1 class="title">
                         `;
                         if(goalInfo[i]["unit"] == "percent") {
                           var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
                           goalTile += value === 'N/A' ? value : value + "%";
                         }
+                        else if(goalInfo[i]["unit"] == "dollars"){
+                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                          goalTile += value === 'N/A' ? value : "$" + value;                          
+                        }
                         else {
                           goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
                         }
           goalTile += `
-                      </div>
+                      </h1></div>
                       <div class="footer">
                           <div class="chart-legend">
                               <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`
