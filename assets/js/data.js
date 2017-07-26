@@ -192,7 +192,7 @@ data = {
                         }
                         else if(goalInfo[i]["unit"] == "dollars"){
                           var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
-                          goalTile += value === 'N/A' ? value : "$" + value;                          
+                          goalTile += value === 'N/A' ? value : "$" + value;
                         }
                         else {
                           goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
@@ -223,9 +223,6 @@ data = {
                         <div class="chart-legend">
                             <i class="fa fa-circle text-info"></i> `+goalInfo[i]["unit"]+`
                             <i class="fa fa-circle text-warning"></i> Target
-                            <i class="fa fa-circle" style="color:#7A9E9F"></i> Projected
-                            <i class="fa fa-circle" style="color:#7AC29A"></i> Confidence Interval +
-                            <i class="fa fa-circle" style="color:#EB5E28"></i> Confidence Interval -
                         </div>
                         <hr>
                         <div class="stats">
