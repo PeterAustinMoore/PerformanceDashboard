@@ -17,6 +17,9 @@
   <!-- Moment JS for rendering timeline charts -->
   <script src="assets/js/moment.js" type="text/javascript"></script>
 
+  <!-- Slick for the Carousel -->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+
 	<!--  Charts Plugin -->
 	<script src="assets/js/chartist.min.js"></script>
 
@@ -29,7 +32,7 @@
   <script src="assets/js/cacheJS.js"></script>
   <!-- Custom JS to retrieve data and visualize it -->
   <script src="assets/js/visuals.js"></script>
-	<script src="assets/js/data.js"></script>
+	<script src="assets/js/data2.js"></script>
 
 	<title>Performance Management Dashboard</title>
 
@@ -46,8 +49,9 @@
   <!--  Paper Dashboard core CSS    -->
   <link href="assets/css/paper-dashboard.css" rel="stylesheet"/>
 
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
 
-  <!--  CSS for Demo Purpose, don't include it in your project     -->
+  <!-- Custom CSS -->
   <link href="assets/css/dashboard.css" rel="stylesheet" />
 
 
@@ -75,15 +79,23 @@
 			data.computeContent(goalArray);
 			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id']);
 			var i = 1;
-			$('#myCarousel').on('slid.bs.carousel', function () {
-				visuals.newChart(goalArray[i]["data"], goalArray[0]["target_data"], goalArray[i]['id']);
-				i++;
-				if(i == goalArray.length) {
-					i = 0;
-				}
-			});
+      $('.carousel').slick({
+        pauseOnHover: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 7000,
+        prevArrow:'',
+        nextArrow:'',
+      });
+      $('.carousel').on('afterChange', function (event, slick, current) {
+        visuals.newChart(goalArray[i]["data"], goalArray[0]["target_data"], goalArray[i]['id']);
+        i++;
+        if(i == goalArray.length) {
+          i = 0;
+        }
+      });
 		});
-
 	</script>
 </head>
 <body>
@@ -221,11 +233,11 @@
                   </div>
               </div>
           </div>
-  				<!-- CAROUSEL PART -->
-  				<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="7000" data-pause="false">
-  					<div id="blocks" class="carousel-inner">
-  					</div>
-  				</div>
+
+  				<!-- CAROUSEL PART-->
+          <div class="carousel" id="blocks">
+          </div>
+
   			</div>
       <!--End Content-->
       </div>
