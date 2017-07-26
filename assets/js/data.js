@@ -174,9 +174,9 @@ data = {
       for(var i in goalInfo) {
         var goalTile =
         `<div><div class="row"><div class="col-md-12"><div class="card"><div class="content">
-          <h2>`+goalInfo[i]["dashboard"]+`</h2></div></div></div></div>
+          <h2 class="db">`+goalInfo[i]["dashboard"]+`</h2></div></div></div></div>
           <div class="row"><div class="col-md-12"><div class="card"><div class="content">
-          <h3>`+goalInfo[i]["category"]+`</h3></div></div></div></div>
+          <h3 class="cat">`+goalInfo[i]["category"]+`</h3></div></div></div></div>
             <div class="row">
                 <div class="col-md-4">
                   <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
