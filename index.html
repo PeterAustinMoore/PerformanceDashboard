@@ -68,9 +68,8 @@
 
 			//FOR DEVELOPMENT
 			var url = window.location.hostname;
-
-			if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
-				var constant = "C";
+			var constant = "C";
+			if(cacheJS.get(url+constant+"data") === null && cacheJS.get("page") === null) {
 				cacheJS.set("page",url+constant)
 				var goalArray = [];
 				var values = data.initData(base);
