@@ -74,6 +74,7 @@
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
+				cacheJS.set("page",curr_page)
         cacheJS.set(curr_page+"data",goalArray);
 			} else {
         var goalArray = cacheJS.get(curr_page+"newData");

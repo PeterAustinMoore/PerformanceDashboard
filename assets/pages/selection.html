@@ -43,7 +43,7 @@
 
 		<script>
 			$(document).ready(function(){
-				var m = cacheJS.get("data");
+				var m = cacheJS.get(page+"data");
 				data.selectionContent(m);
 
 				// Select All Goals
@@ -77,19 +77,20 @@
 					});
 				// Refresh the goal data on Form Submit
 				$("#goalForm").submit(function(){
+					var page = cacheJS.get("page");
 					var formData = $("#goalForm").serializeArray();
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
-						var newGoals = cacheJS.get("data")
-						cacheJS.set("newData",newGoals);
+						var newGoals = cacheJS.get(page+"data")
+						cacheJS.set(page+"newData",newGoals);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
 							var dd = JSON.parse(formData[i]['value']);
 							newGoals.push(dd);
 						}
-						cacheJS.set("newData",newGoals);
+						cacheJS.set(page+"newData",newGoals);
 					}
 				});
 			});
