@@ -70,14 +70,15 @@
 			var url = window.location.hostname;
 
 			if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
-				cacheJS.set("page",url+"C")
+				var constant = "C";
+				cacheJS.set("page",url+constant)
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
 
-        cacheJS.set(id+"data",goalArray);
+        cacheJS.set(url+constant+"data",goalArray);
 			} else {
 				var url = cacheJS.get("page")
         var goalArray = cacheJS.get(url+"newData");
