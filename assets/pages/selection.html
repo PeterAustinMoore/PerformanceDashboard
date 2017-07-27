@@ -43,8 +43,11 @@
 
 		<script>
 			$(document).ready(function(){
-				var page = cacheJS.get("page");
-				var m = cacheJS.get(page+"data");
+				//FOR DEVELOPMENT
+				var constant = "C";
+				var url = window.location.hostname+constant;
+
+				var m = cacheJS.get(url+"data");
 				data.selectionContent(m);
 
 				// Select All Goals
@@ -82,15 +85,15 @@
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
-						var newGoals = cacheJS.get(page+"data")
-						cacheJS.set(page+"newData",newGoals);
+						var newGoals = cacheJS.get(url+"data")
+						cacheJS.set(url+"newData",newGoals);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
 							var dd = JSON.parse(formData[i]['value']);
 							newGoals.push(dd);
 						}
-						cacheJS.set(page+"newData",newGoals);
+						cacheJS.set(url+"newData",newGoals);
 					}
 				});
 			});
