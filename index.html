@@ -67,17 +67,19 @@
 
 
 			//FOR DEVELOPMENT
-			var url = window.location.hostname;
 			var constant = "C";
-			if(cacheJS.get(url+constant+"data") === null && cacheJS.get("page") === null) {
-				cacheJS.set("page",url+constant)
+			var url = window.location.hostname+constant;
+
+
+			if(cacheJS.get(url+"data") === null || cacheJS.get("page") != url) {
+				cacheJS.set("page",url)
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
 
-        cacheJS.set(url+constant+"data",goalArray);
+        cacheJS.set(url+"data",goalArray);
 			} else {
 				var url = cacheJS.get("page")
         var goalArray = cacheJS.get(url+"newData");
