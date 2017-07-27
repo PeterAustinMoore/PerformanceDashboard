@@ -1,8 +1,6 @@
 t = "";
 data = {
-  initData: function() {
-    var base = "https://performance.fultoncountyga.gov";
-
+  initData: function(base) {
     function getGoalInfo(base, g_id, dashboard, category) {
       var g_url = base + "/api/stat/v1/goals/" + g_id + ".json";
       var goalInfo = {"ontarget":0};
