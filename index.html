@@ -68,15 +68,15 @@
 			//FOR DEVELOPMENT
 			var url = window.location.hostname;
 
-			if(cacheJS.get("data") === null) {
+			if(cacheJS.get(curr_page+"data") === null) {
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
-        cacheJS.set("data",goalArray);
+        cacheJS.set(curr_page+"data",goalArray);
 			} else {
-        var goalArray = cacheJS.get("newData");
+        var goalArray = cacheJS.get(curr_page+"newData");
         ontarget = data.newOnTarget(goalArray);
 			}
 			data.computeCount(goalArray);
