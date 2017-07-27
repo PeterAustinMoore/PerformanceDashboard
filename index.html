@@ -70,8 +70,7 @@
 			var url = window.location.hostname;
 
 			if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
-				var id = Date.now().toString();
-				cacheJS.set("page",id)
+				cacheJS.set("page",url+"C")
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
@@ -80,8 +79,8 @@
 
         cacheJS.set(id+"data",goalArray);
 			} else {
-				var id = cacheJS.get("page")
-        var goalArray = cacheJS.get(id+"newData");
+				var url = cacheJS.get("page")
+        var goalArray = cacheJS.get(url+"newData");
         ontarget = data.newOnTarget(goalArray);
 			}
 			data.computeCount(goalArray);
