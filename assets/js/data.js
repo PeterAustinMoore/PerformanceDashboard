@@ -291,23 +291,27 @@ data = {
       var tiles = '<div class="row">';
       for(var i in goalInfo) {
         goalTile=
-        `  <div class="col-md-3">
-                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
+        `  <div class="col-sm-3">
+                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`" style="height:250px">
                     <div class="header">
                       <h3 class="title">`+goalInfo[i]["name"]+`</h3>
                     </div>
                     <div class="content">
-                      <div id="current_value">
-                        `;
-                        if(goalInfo[i]["unit"] == "percent") {
-                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
-                          goalTile += value === 'N/A' ? value : value + "%";
-                        }
-                        else {
-                          goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
-                        }
-          goalTile += `
-                      </div>
+                      <div id="current_value"><h1 class="title">
+                      `;
+                      if(goalInfo[i]["unit"] == "percent") {
+                        var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                        goalTile += value === 'N/A' ? value : value + "%";
+                      }
+                      else if(goalInfo[i]["unit"] == "dollars"){
+                        var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                        goalTile += value === 'N/A' ? value : "$" + value;
+                      }
+                      else {
+                        goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
+                      }
+        goalTile += `
+                      </h1></div>
                       <div class="footer">
                           <div class="chart-legend">
                               <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`

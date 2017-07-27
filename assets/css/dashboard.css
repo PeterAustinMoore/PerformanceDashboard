@@ -26,6 +26,7 @@ input[type="submit"] {
         left: 0px;
         position: absolute;
     }
+
 }
 @media only screen and (max-width: 450px) {
   .db {
@@ -33,6 +34,10 @@ input[type="submit"] {
   }
   .cat {
     font-size: 5vw;
+  }
+  i.ti-settings.gear {
+    height: 35px;
+    height: 35px;
   }
 }
 .ct-series.ct-series-c .ct-line {
@@ -116,9 +121,11 @@ ul h1 {
 }
 #measure-1 .header {
   background: #56ef9a;
+  height:90px;
 }
 #measure-0 .header {
   background: #ef5656;
+  height:90px;
 }
 #current_value {
   text-align:center;

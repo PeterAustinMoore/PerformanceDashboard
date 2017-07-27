@@ -2394,9 +2394,10 @@ textarea.form-control {
           position: relative;
           top: 12px; }
         .off-canvas-sidebar .nav > li > a i {
-          font-size: 18px;
+          font-size: 40px;
           margin-right: 10px;
-          line-height: 26px; }
+          line-height: 35px;
+          }
       .off-canvas-sidebar .nav > li.active > a:before {
         border-right: none;
         border-left: 12px solid #DDDDDD;
