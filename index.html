@@ -64,20 +64,24 @@
 
     $(document).ready(function(){
 			var base = "https://performance.fultoncountyga.gov";
-			var curr_page = window.location.pathname;
+
+
 			//FOR DEVELOPMENT
 			var url = window.location.hostname;
 
-			if(cacheJS.get(curr_page+"data") === null) {
+			if(cacheJS.get(id+"data") === null && cacheJS.get("page") === null) {
+				var id = Date.now().toString();
+				cacheJS.set("page",id)
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
-				cacheJS.set("page",curr_page)
-        cacheJS.set(curr_page+"data",goalArray);
+
+        cacheJS.set(id+"data",goalArray);
 			} else {
-        var goalArray = cacheJS.get(curr_page+"newData");
+				var id = cacheJS.get("page")
+        var goalArray = cacheJS.get(id+"newData");
         ontarget = data.newOnTarget(goalArray);
 			}
 			data.computeCount(goalArray);
