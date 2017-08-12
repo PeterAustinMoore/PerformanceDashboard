@@ -16,11 +16,11 @@ visuals = {
         });
     },
 
-    initChartist: function(d, t, goalId){
+    initChartist: function(d, t, goalId, b){
       var budget = {
               labels: ['Budget vs Actuals'],
               series: [
-                [20]
+                [b]
               ]
             };
 
@@ -41,7 +41,6 @@ visuals = {
           axisY: {
             offset:100
           },
-          high:100,
           height:60
         };
 

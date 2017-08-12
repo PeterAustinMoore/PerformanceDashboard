@@ -1,6 +1,6 @@
 t = "";
 data = {
-  initData: function(base) {
+  initData: function(base, budgetBase) {
     function getGoalInfo(base, g_id, dashboard, category, d_id, c_id) {
       var g_url = base + "/api/stat/v1/goals/" + g_id + ".json";
       var goalInfo = {"ontarget":0};
@@ -112,8 +112,23 @@ data = {
       });
       return [goalArray,ontarget];
     }
-
-    var url = base + "/api/stat/v1/dashboards.json";
+    function getExpenseAmount(url, primary, year, fy) {
+      var e_url = "";
+      if(fy == "All Years") {
+        e_url = url + "?$select=sum("+primary+") as _sum,"+year+"&$group="+year+"&$order="+year+" DESC";
+      } else {
+        e_url = url + "?$select=sum("+primary+") as _sum&$where="+year+"="+fy;
+      }
+      $.ajax({
+          url: e_url,
+          async: false,
+          dataType: 'json',
+          success: function(data) {
+            return data[0]["_sum"]
+          }
+        });
+    }
+    var goal_url = base + "/api/stat/v1/dashboards.json";
     var goalArray = Array();
     var count = 0;
     var ontarget = 0;
@@ -121,7 +136,7 @@ data = {
     var txt = "";
 
     $.ajax({
-        url: url,
+        url: goal_url,
         async: false,
         dataType: 'json',
         success: function(data) {
@@ -134,7 +149,27 @@ data = {
           }
         }
       });
-      return [goalArray,ontarget];
+      var budget_url = budgetBase + "/check/readiness.json";
+
+      $.ajax({
+        url: budget_url,
+        async: false,
+        dataType: 'json',
+        success: function(data) {
+          var primary_field = data["config"]["fields"]["ledger"]["amount"]
+          try {
+            var secondary_field = data["config"]["fields"]["ledger"]["secondary_amount"]
+          } catch(e) {
+            var secondary_field = ""
+          }
+          var fiscal_year_field = data["config"]["fields"]["ledger"]["fiscal_year"]
+          var fiscal_year = data["config"]["current_fy"]
+          var url = "https://" + data["config"]["dataset_domain"] + "/resource/" + data["config"]["ledger_dataset_id"] + ".json"
+          var amount = getExpenseAmount(url, primary_field, fiscal_year_field, fiscal_year)
+        }
+      });
+
+      return [goalArray,ontarget,amount];
     },
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();

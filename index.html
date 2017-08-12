@@ -63,7 +63,9 @@
 	<script>
 
     $(document).ready(function(){
-			var base = "https://performance.fultoncountyga.gov";
+			var goal_base = "https://performance.fultoncountyga.gov";
+			var spending_base = "https://noaa.spending.socrata.com";
+
 			function cacheID() {
 			  function s4() {
 			    return Math.floor((1 + Math.random()) * 0x10000)
@@ -81,6 +83,7 @@
 			    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 			}
 			function getCookie(cname) {
+				return false;
 			    var name = cname + "=";
 			    var decodedCookie = decodeURIComponent(document.cookie);
 			    var ca = decodedCookie.split(';');
@@ -101,14 +104,21 @@
 
 			if(cacheJS.get(id) === null && !getCookie("cached")) {
 				var goalArray = [];
-				var values = data.initData(base);
+				// Do the initial data pull
+				var values = data.initData(goal_base, spending_base);
+
+				// Set data values
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
+				var budgetData = values[2];
+
+				// Cache data for future use
         cacheJS.set(id,goalArray);
 				cacheJS.set("newData", goalArray);
 				setCookie("cached",id,1);
 			} else {
+				// Reset the data based on what the user has selected
         var goalArray = cacheJS.get("newData");
         ontarget = data.newOnTarget(goalArray);
 			}
