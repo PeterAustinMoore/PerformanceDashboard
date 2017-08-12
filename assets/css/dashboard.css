@@ -1,3 +1,11 @@
+.ct-series-a .ct-bar {
+  stroke-width:20px;
+}
+.ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {
+  display: inline-block;
+  width: auto !important;
+  transform: translateX(-50%)
+}
 #banner {
   width: 100%;
   max-height: 200px;

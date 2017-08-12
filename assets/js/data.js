@@ -121,8 +121,11 @@ data = {
       }
       $.ajax({
           url: e_url,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization","Basic c3RhZ2luZzpzdGFnaW5n");
+          },
           async: false,
-          dataType: 'json',
+          dataType: 'jsonp',
           success: function(data) {
             return data[0]["_sum"]
           }
@@ -149,27 +152,31 @@ data = {
           }
         }
       });
-      var budget_url = budgetBase + "/check/readiness.json";
-
+      var budget_url = "http://noaa-ocao.data.socrata.com/resource/hnx7-grrd.json?$select=sum(total)%20as%20_sum,%20year&$group=year&$order=year%20DESC";
+      var b_data = {};
       $.ajax({
         url: budget_url,
         async: false,
+        beforeSend: function(xhr) {
+          //xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
+          //xhr.setRequestHeader("Authorization","Basic ")
+        },
         dataType: 'json',
         success: function(data) {
-          var primary_field = data["config"]["fields"]["ledger"]["amount"]
-          try {
-            var secondary_field = data["config"]["fields"]["ledger"]["secondary_amount"]
-          } catch(e) {
-            var secondary_field = ""
-          }
-          var fiscal_year_field = data["config"]["fields"]["ledger"]["fiscal_year"]
-          var fiscal_year = data["config"]["current_fy"]
-          var url = "https://" + data["config"]["dataset_domain"] + "/resource/" + data["config"]["ledger_dataset_id"] + ".json"
-          var amount = getExpenseAmount(url, primary_field, fiscal_year_field, fiscal_year)
+          b_data = +data[0]["_sum"];
+//          var primary_field = data["config"]["fields"]["ledger"]["amount"]
+//          try {
+//            var secondary_field = data["config"]["fields"]["ledger"]["secondary_amount"]
+//          } catch(e) {
+//            var secondary_field = ""
+//          }
+//          var fiscal_year_field = data["config"]["fields"]["ledger"]["fiscal_year"]
+//          var fiscal_year = data["config"]["current_fy"]
+//          var url = "https://" + data["config"]["dataset_domain"] + "/resource/" + data["config"]["ledger_dataset_id"] + ".json"
+//          var amount = getExpenseAmount(url, primary_field, fiscal_year_field, fiscal_year)
         }
       });
-
-      return [goalArray,ontarget,amount];
+      return [goalArray,ontarget,b_data];
     },
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();

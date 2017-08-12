@@ -83,7 +83,6 @@
 			    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 			}
 			function getCookie(cname) {
-				return false;
 			    var name = cname + "=";
 			    var decodedCookie = decodeURIComponent(document.cookie);
 			    var ca = decodedCookie.split(';');
@@ -207,6 +206,10 @@
     			</div>
     			<div class="collapse navbar-collapse navbar-left">
     			</div>
+					<div><!--
+						<iframe id="frame" frameborder='0' border='0' marginwidth='0' marginheight='0' height="0" scrolling="no" src="https://noaa.spending.socrata.com/embed/barchart?current_entity=null&year=default&child_entity=org1&sort_field=total&sort=desc&sourceUrl=https%3A%2F%2Fnoaa.spending.socrata.com%2F%23!%2Fyear%2FAll%2520Years%2Fexplore%2F0%2Fbureau&type=json" width="100%"></iframe>
+					-->
+					</div>
     	</div>
     </nav>
     <div class="content">
@@ -269,9 +272,9 @@
                                       <i class="ti-pulse"></i>
   																	</div>
   														</div>
-                              <div class="col-xs-10">
-  																<div id="chart">
-  																</div>
+                              <div id="chart" class="col-xs-10">
+  																<!--<div id="chart">
+  																</div>-->
                           		</div>
   												</div>
                           <div class="footer">
@@ -307,7 +310,6 @@
 			</div>
 	</footer>
   </div>
-
 </div>
 
 </body>

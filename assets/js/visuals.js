@@ -17,29 +17,36 @@ visuals = {
     },
 
     initChartist: function(d, t, goalId, b){
+      b = 18467414.40;
       var budget = {
               labels: ['Budget vs Actuals'],
               series: [
-                [b]
+              [b+1000000],  [b]
               ]
             };
 
 
       var budgetOptions = {
-          seriesBarDistance: 10,
+          //seriesBarDistance: 10,
           //reverseData: true,
           horizontalBars: true,
+          seriesBarDistance: 0,
           axisX: {
-            //type: Chartist.StepAxis,
+            type: Chartist.FixedScaleAxis,
             stretch:false,
             onlyInteger: true,
             low:0,
-            offset:20
-            //ticks:["Q1","Q2","Q3"]
+            high: b+b/3,
+            divisor:1,
+            ticks:[b],
+            offset:20,
+            labelInterpolationFnc: function(value) {
+              return "$" + value
+            }
             //scaleMinSpace:$('.ct-chart-bar').width()/4
           },
           axisY: {
-            offset:100
+            offset:70
           },
           height:60
         };
