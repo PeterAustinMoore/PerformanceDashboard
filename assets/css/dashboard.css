@@ -28,7 +28,7 @@ input[type="submit"] {
     }
 
 }
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 450px){
   .db {
     font-size: 7vw;
   }
@@ -38,6 +38,11 @@ input[type="submit"] {
   i.ti-settings.gear {
     height: 35px;
     height: 35px;
+  }
+}
+@media only screen and (max-width: 780px) and (min-width: 600px){
+  h4.title {
+    font-size: 2vw;
   }
 }
 .ct-series.ct-series-c .ct-line {

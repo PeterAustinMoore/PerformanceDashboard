@@ -57,8 +57,22 @@
 
 	<script>
     $(document).ready(function(){
-			var page = cacheJS.get("page");
-      var goalArray = cacheJS.get(page+"newData");
+			function getCookie(cname) {
+					var name = cname + "=";
+					var decodedCookie = decodeURIComponent(document.cookie);
+					var ca = decodedCookie.split(';');
+					for(var i = 0; i <ca.length; i++) {
+							var c = ca[i];
+							while (c.charAt(0) == ' ') {
+									c = c.substring(1);
+							}
+							if (c.indexOf(name) == 0) {
+									return c.substring(name.length, c.length);
+							}
+					}
+					return false;
+			}
+      var goalArray = cacheJS.get("newData");
       data.computeContentBoard(goalArray);
       // Override the JQuery/Bootstrap mixup
       $(".backtodash").click(function(){
@@ -84,7 +98,7 @@
 
             <ul class="nav">
                 <li class="active">
-                    <a href="index.html">
+                    <a href="../../index.html">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
@@ -130,15 +144,16 @@
     							<span class="icon-bar bar3"></span>
     					</button>
     			</div>
-    			<div class="collapse navbar-collapse">
-            <div class="col-md-4">
-              <button class="backtodash" data-role="button" data-icon="arrow-l">Back to Dashboard</a>
-            </div>
-    			</div>
+					<div class="collapse navbar-collapse">
+						<div class="col-md-4">
+							<button class="backtodash" data-role="button" data-icon="arrow-l">Back to Dashboard</button>
+						</div>
+					</div>
     	</div>
     </nav>
     <div class="content">
       <div class="container-fluid">
+				<button class="backtodashMobile backtodash" data-role="button" style="display:none" data-icon="arrow-l">Back to Dashboard</button>
         <div id="blocks"></div>
   			</div>
       <!--End Content-->
@@ -147,6 +162,13 @@
   </div>
   <footer class="footer">
       <div class="container-fluid">
+				<nav class="pull-left">
+						<ul>
+							<li>
+								<a href="https://socrata.com/solutions/performance-improvement-accountability/">Powered by Socrata</a>
+							</li>
+						</ul>
+				</nav>
       </div>
   </footer>
 </div>

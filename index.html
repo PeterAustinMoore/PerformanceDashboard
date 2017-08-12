@@ -64,25 +64,52 @@
 
     $(document).ready(function(){
 			var base = "https://performance.fultoncountyga.gov";
+			function cacheID() {
+			  function s4() {
+			    return Math.floor((1 + Math.random()) * 0x10000)
+			      .toString(16)
+			      .substring(1);
+			  }
+			  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+			    s4() + '-' + s4() + s4() + s4();
+			}
 
-
+			function setCookie(cname, cvalue, exdays) {
+			    var d = new Date();
+			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			    var expires = "expires="+ d.toUTCString();
+			    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+			}
+			function getCookie(cname) {
+			    var name = cname + "=";
+			    var decodedCookie = decodeURIComponent(document.cookie);
+			    var ca = decodedCookie.split(';');
+			    for(var i = 0; i <ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0) == ' ') {
+			            c = c.substring(1);
+			        }
+			        if (c.indexOf(name) == 0) {
+			            return c.substring(name.length, c.length);
+			        }
+			    }
+			    return false;
+			}
 			//FOR DEVELOPMENT
-			var constant = "C";
-			var url = window.location.hostname+constant;
+			var id = cacheID();
 
 
-			if(cacheJS.get(url+"data") === null || cacheJS.get("page") != url) {
-				cacheJS.set("page",url)
+			if(cacheJS.get(id) === null && !getCookie("cached")) {
 				var goalArray = [];
 				var values = data.initData(base);
 				var goalArray = values[0];
 				var chartData = "";
 				ontarget = values[1];
-
-        cacheJS.set(url+"data",goalArray);
+        cacheJS.set(id,goalArray);
+				cacheJS.set("newData", goalArray);
+				setCookie("cached",id,1);
 			} else {
-				var url = cacheJS.get("page")
-        var goalArray = cacheJS.get(url+"newData");
+        var goalArray = cacheJS.get("newData");
         ontarget = data.newOnTarget(goalArray);
 			}
 			data.computeCount(goalArray);
@@ -256,11 +283,22 @@
       <!--End Content-->
       </div>
   <!--End Main Panel-->
+	<footer class="footer">
+			<div class="container-fluid">
+					<nav class="pull-left">
+							<ul>
+								<li>
+									<a href="https://socrata.com/solutions/performance-improvement-accountability/">Powered by Socrata</a>
+								</li>
+							</ul>
+					</nav>
+					<div class="copyright pull-right">
+					</div>
+			</div>
+	</footer>
   </div>
-  <footer class="footer">
-      <div class="container-fluid">
-      </div>
-  </footer>
+
 </div>
+
 </body>
 </html>

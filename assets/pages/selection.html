@@ -44,10 +44,26 @@
 		<script>
 			$(document).ready(function(){
 				//FOR DEVELOPMENT
-				var constant = "C";
-				var url = window.location.hostname+constant;
+				function getCookie(cname) {
+						var name = cname + "=";
+						var decodedCookie = decodeURIComponent(document.cookie);
+						var ca = decodedCookie.split(';');
+						for(var i = 0; i <ca.length; i++) {
+								var c = ca[i];
+								while (c.charAt(0) == ' ') {
+										c = c.substring(1);
+								}
+								if (c.indexOf(name) == 0) {
+										return c.substring(name.length, c.length);
+								}
+						}
+						return false;
+				}
 
-				var m = cacheJS.get(url+"data");
+				if(getCookie("cached") != false) {
+					var id = getCookie("cached");
+					var m = cacheJS.get(id);
+				}
 				data.selectionContent(m);
 
 				// Select All Goals
@@ -74,7 +90,6 @@
 				$(".backtodash").click(function(){
 						$("#goalForm").submit();
 						window.location.href='../../index.html';
-
 					});
 				$(".logo").click(function(){
 						window.location.href='../../index.html';
@@ -85,15 +100,15 @@
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
-						var newGoals = cacheJS.get(url+"data")
-						cacheJS.set(url+"newData",newGoals);
+						var newGoals = cacheJS.get(id)
+						cacheJS.set("newData",newGoals);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
 							var dd = JSON.parse(formData[i]['value']);
 							newGoals.push(dd);
 						}
-						cacheJS.set(url+"newData",newGoals);
+						cacheJS.set("newData",newGoals);
 					}
 				});
 			});
@@ -159,7 +174,7 @@
                 </div>
                 <div class="collapse navbar-collapse">
 									<div class="col-md-4">
-										<button class="backtodash" data-role="button" data-icon="arrow-l">Back to Dashboard</button>
+										<button class="backtodash" data-role="button" data-icon="arrow-l">Save and Back to Dashboard</button>
 									</div>
 								</div>
             </div>
@@ -167,13 +182,12 @@
 
         <div class="content">
             <div class="container-fluid">
-							<button class="backtodashMobile backtodash" data-role="button" style="display:none" data-icon="arrow-l">Back to Dashboard</button>
+							<button class="backtodashMobile backtodash" data-role="button" style="display:none" data-icon="arrow-l">Save and Back to Dashboard</button>
 							<form>
 								<input type="text" id="filterable" data-type="search" autocomplete="off">
 							</form>
 
 							<form action="javascript:void(0);" method="post" name="newGoals" id="goalForm">
-								<input type="submit" value="Save" />
 								<div class="row">
 									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
 										<a href="#" id="selectall" data-role="button" data-icon="plus">Select All</a>
@@ -206,6 +220,9 @@
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
+											<li>
+												<a href="https://socrata.com/solutions/performance-improvement-accountability/">Powered by Socrata</a>
+											</li>
                     </ul>
                 </nav>
 								<div class="copyright pull-right">

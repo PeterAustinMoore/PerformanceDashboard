@@ -1,7 +1,7 @@
 t = "";
 data = {
   initData: function(base) {
-    function getGoalInfo(base, g_id, dashboard, category) {
+    function getGoalInfo(base, g_id, dashboard, category, d_id, c_id) {
       var g_url = base + "/api/stat/v1/goals/" + g_id + ".json";
       var goalInfo = {"ontarget":0};
       $.ajax({
@@ -15,7 +15,8 @@ data = {
             goalInfo["name"] = data["name"];
             goalInfo["category"] = category;
             goalInfo["dashboard"] = dashboard;
-            goalInfo["url"] = g_url;
+            goalInfo["api_url"] = g_url;
+            goalInfo["url"] = base + "/stat/goals/" + d_id + "/" + c_id + "/" + g_id;
 
             // Get the summary of the goal
             try {
@@ -102,7 +103,7 @@ data = {
             for(var j in categories) {
               goals = categories[j]['goals'];
               for(var k in goals) {
-                var goalInfo = getGoalInfo(base, goals[k]['id'],dashboard, categories[j]["name"])
+                var goalInfo = getGoalInfo(base, goals[k]['id'],dashboard, categories[j]["name"], d_id, categories[j]["id"])
                 goalArray.push(goalInfo);
                 ontarget += goalInfo["ontarget"];
               }
@@ -203,7 +204,7 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-calendar"></i>`+goalInfo[i]["updated"]+`
+                              <i class="ti-calendar"></i><a href="`+goalInfo[i]["url"]+`">Link to goal</a>
                           </div>
                       </div>
                     </div>
@@ -292,7 +293,7 @@ data = {
         `  <div class="col-sm-3">
                   <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`" style="height:250px">
                     <div class="header">
-                      <h3 class="title">`+goalInfo[i]["name"]+`</h3>
+                      <h4 class="title">`+goalInfo[i]["name"]+`</h4>
                     </div>
                     <div class="content">
                       <div id="current_value"><h1 class="title">
@@ -316,7 +317,7 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-calendar"></i>`+goalInfo[i]["updated"]+`
+                              <i class="ti-calendar"></i><a href="`+goalInfo[i]["url"]+`">Link to Goal</a>
                           </div>
                       </div>
                     </div>
