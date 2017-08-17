@@ -152,31 +152,7 @@ data = {
           }
         }
       });
-      var budget_url = "http://noaa-ocao.data.socrata.com/resource/hnx7-grrd.json?$select=sum(total)%20as%20_sum,%20year&$group=year&$order=year%20DESC";
-      var b_data = {};
-      $.ajax({
-        url: budget_url,
-        async: false,
-        beforeSend: function(xhr) {
-          //xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
-          //xhr.setRequestHeader("Authorization","Basic ")
-        },
-        dataType: 'json',
-        success: function(data) {
-          b_data = +data[0]["_sum"];
-//          var primary_field = data["config"]["fields"]["ledger"]["amount"]
-//          try {
-//            var secondary_field = data["config"]["fields"]["ledger"]["secondary_amount"]
-//          } catch(e) {
-//            var secondary_field = ""
-//          }
-//          var fiscal_year_field = data["config"]["fields"]["ledger"]["fiscal_year"]
-//          var fiscal_year = data["config"]["current_fy"]
-//          var url = "https://" + data["config"]["dataset_domain"] + "/resource/" + data["config"]["ledger_dataset_id"] + ".json"
-//          var amount = getExpenseAmount(url, primary_field, fiscal_year_field, fiscal_year)
-        }
-      });
-      return [goalArray,ontarget,b_data];
+      return [goalArray,ontarget];
     },
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();
@@ -246,14 +222,14 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-calendar"></i><a href="`+goalInfo[i]["url"]+`">Link to goal</a>
+                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`">Link to goal</a>
                           </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-8">
-                  <div class="card">
+                  <div class="card" id="visual">
                     <div class="header">
                       <h3 class="title">` + goalInfo[i]["name"]+`</h3>
                       <p class="category">`+ goalInfo[i]["summary"]+`</p>
@@ -359,7 +335,7 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-calendar"></i><a href="`+goalInfo[i]["url"]+`">Link to Goal</a>
+                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`">Link to Goal</a>
                           </div>
                       </div>
                     </div>

@@ -36,8 +36,10 @@ $(document).ready(function(){
 $(window).resize(function(){
     if($(window).width() <= 991){
         pd.initLeftMenu();
+        $("nav").show();
     } else {
       $('.backtodashMobile').hide();
+      $("nav").hide();
     }
 });
 

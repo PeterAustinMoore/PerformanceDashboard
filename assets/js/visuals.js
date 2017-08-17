@@ -16,42 +16,7 @@ visuals = {
         });
     },
 
-    initChartist: function(d, t, goalId, b){
-      b = 18467414.40;
-      var budget = {
-              labels: ['Budget vs Actuals'],
-              series: [
-              [b+1000000],  [b]
-              ]
-            };
-
-
-      var budgetOptions = {
-          //seriesBarDistance: 10,
-          //reverseData: true,
-          horizontalBars: true,
-          seriesBarDistance: 0,
-          axisX: {
-            type: Chartist.FixedScaleAxis,
-            stretch:false,
-            onlyInteger: true,
-            low:0,
-            high: b+b/3,
-            divisor:1,
-            ticks:[b],
-            offset:20,
-            labelInterpolationFnc: function(value) {
-              return "$" + value
-            }
-            //scaleMinSpace:$('.ct-chart-bar').width()/4
-          },
-          axisY: {
-            offset:70
-          },
-          height:60
-        };
-
-        Chartist.Bar('#chart', budget, budgetOptions);
+    initChartist: function(d, t, goalId){
 
         var data = {
               series: [
