@@ -1566,7 +1566,7 @@ textarea.form-control {
     min-height: 64px; }
   .card .numbers {
     font-size: 2em;
-    text-align: right; }
+    text-align: left; }
     .card .numbers p {
       margin: 0; }
   .card ul.team-members li {
