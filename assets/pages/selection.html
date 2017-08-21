@@ -85,6 +85,48 @@
 					}
 					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
+				// Select all OnTarget
+				$(".ontarget").click(function(e){
+					for(i in m){
+							if(m[i]["ontarget"] === 1) {
+								var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
+								if(checked) {
+									$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+								} else {
+									$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+								}
+							}
+					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
+				});
+				// Select all OffTarget
+				$(".offtarget").click(function(e){
+					for(i in m){
+						if(m[i]["ontarget"] === 0) {
+							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
+							if(checked) {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							} else {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							}
+						}
+					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
+				});
+				// Select all Measuring Goals
+				$(".measuring").click(function(e){
+					for(i in m){
+						if(m[i]["ontarget"] === 2) {
+							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
+							if(checked) {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							} else {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							}
+						}
+					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
+				});
 				// Override the JQuery/Bootstrap mixup
 				$(".backtodash").click(function(){
 						$("#goalForm").submit();
@@ -96,6 +138,7 @@
 				// Refresh the goal data on Form Submit
 				$("#goalForm").submit(function(){
 					var formData = $("#goalForm").serializeArray();
+					console.log(formData);
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
@@ -104,7 +147,7 @@
 					} else {
 						var newGoals = [];
 						for(i in formData) {
-							var dd = JSON.parse(formData[i]['value']);
+							var dd = JSON.parse(decodeURIComponent(formData[i]['value']));
 							newGoals.push(dd);
 						}
 						cacheJS.set("newData",newGoals);
@@ -191,6 +234,14 @@
 									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
 										<a href="#" id="selectall" data-role="button" data-icon="plus">Select All</a>
 										<a href="#" id="selectsubset" data-role="button" data-icon="minus">Select None</a>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
+										<p>Quick Filters</p>
+										<a href="#" class="ontarget" data-role="button" data-icon="minus">Select On Target Goals</a>
+										<a href="#" class="offtarget" data-role="button" data-icon="minus">Select Off Target Goals</a>
+										<a href="#" class="measuring" data-role="button" data-icon="minus">Select Measuring Goals</a>
 									</div>
 								</div>
 								<div class="row">

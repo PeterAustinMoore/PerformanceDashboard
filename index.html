@@ -112,7 +112,7 @@
 				var ontarget = values[1];
 				var offtarget = values[2]
 				var budget = values[3]
-
+				var measuring = goalArray.length - ontarget - offtarget;
 				// Cache data for future use
         cacheJS.set("data", goalArray);
 				cacheJS.set("budget",budget);
@@ -123,11 +123,14 @@
         var goalArray = cacheJS.get("newData");
         ontarget = data.newOnTarget(goalArray);
 				offtarget = data.newOffTarget(goalArray);
+				var measuring = goalArray.length - ontarget - offtarget;
 				var budget = cacheJS.get("budget")
 			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
 			data.computeOffTarget(offtarget);
+			data.computeMeasuring(measuring);
+			console.log(goalArray);
 			data.computeContent(goalArray);
 			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id'], budget);
 
@@ -144,7 +147,7 @@
         nextArrow:'',
       });
       $('.carousel').on('afterChange', function (event, slick, current) {
-        visuals.newChart(goalArray[i]["data"], goalArray[0]["target_data"], goalArray[i]['id']);
+        visuals.newChart(goalArray[i]["data"], goalArray[i]["target_data"], goalArray[i]['id']);
         i++;
         if(i == goalArray.length) {
           i = 0;
@@ -261,15 +264,13 @@
 														<!--On and Off target-->
 														<div class="row">
 																	<div class="col-xs-2">
-																			<div class="icon-big icon-success text-center">
-																					<i class="ti-check-box"></i>
+																			<div class="icon-big icon-info text-center">
+																					<i class="ti-ruler"></i>
 																			</div>
 																	</div>
 																	<div class="col-xs-4">
-																		<a href="assets/pages/ontargetboard.html">
-																			<div id="ontarget" class="numbers">
-																				<p>Measuring</p>
-																				122
+																		<a href="assets/pages/measuringboard.html">
+																			<div id="measuring" class="numbers">
 																			</div>
 																		</a>
 																	</div>

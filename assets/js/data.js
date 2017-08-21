@@ -43,10 +43,22 @@ data = {
               goalInfo["current_value"] = "N/A";
             }
             // Get the target
-            try {
-              goalInfo["target"] = data["prevailing_measure"]["target"]
-            } catch(e) {
-              goalInfo["target"] = 0
+            if(data.hasOwnProperty("prevailing_measure")){
+              if(data["prevailing_measure"].hasOwnProperty("comparison")) {
+                var compare = data["prevailing_measure"]["comparison"]["comparison_function"] == ">" ? "More than " : "Less than ";
+              } else {
+                var compare = null;
+              }
+
+              if(data["prevailing_measure"].hasOwnProperty("baseline")) {
+                goalInfo["target"] = [compare, data["prevailing_measure"]["baseline"]]
+              }
+              else if(data["prevailing_measure"].hasOwnProperty("target")) {
+                goalInfo["target"] = [compare, data["prevailing_measure"]["target"]];
+              }
+              else {
+                goalInfo["target"] = null;
+              }
             }
             // Get Measure Data
             try {
@@ -54,7 +66,7 @@ data = {
               if(measure == "good" || measure == "within_tolerance") {
                 goalInfo["ontarget"] = 1;
               }
-              if(measure == "no_judgement") {
+              if(measure == "no_judgement" || measure == "needs_more_data") {
                 goalInfo["ontarget"] = 2;
               }
             } catch(e) {
@@ -78,7 +90,7 @@ data = {
             goalInfo["target_data"] = [];
             try {
               for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
-                var t = {y: goalInfo["target"], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
+                var t = {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
                 var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
                          x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
                        };
@@ -166,6 +178,9 @@ data = {
     computeOffTarget: function(offtarget) {
       document.getElementById("offtarget").innerHTML = "<p>Off Target</p>"+offtarget.toString();
     },
+    computeMeasuring: function(measuring) {
+      document.getElementById("measuring").innerHTML = "<p>Measuring</p>"+measuring.toString();
+    },
     newOnTarget: function(goalArray) {
       var ontarget = 0;
       for(i in goalArray) {
@@ -239,7 +254,18 @@ data = {
                           goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
                         }
           goalTile += `
-                      </h1></div>
+                      </h1><p>`;
+                      if(goalInfo[i]["unit"] == "percent") {
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
+                      }
+                      else if(goalInfo[i]["unit"] == "dollars"){
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + goalInfo[i]["target"][1];
+                      }
+                      else {
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + goalInfo[i]["target"][1];
+                      }
+
+                      goalTile += `</p></div>
                       <div class="footer">
                           <div class="chart-legend">
                               <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`
@@ -302,7 +328,7 @@ data = {
             var cat = '<div data-role="collapsible" class="searchResults" data-role="listview" data-filter="true" data-input="#filterable"><h1>' + c + '</h1><div id="filtered" data-role="listview" data-filter="true" data-input="#filterable">';
             template += cat;
             for(g in map[k][c]) {
-              goal = '<label><input id="'+map[k][c][g]["id"]+'" class="goalcheck '+k.replace(/\W+/g,"-")+'" type="checkbox" name="goal" value=\''+ JSON.stringify(map[k][c][g])+ '\'/>' + map[k][c][g]["name"] + "</label>" ;
+              goal = '<label><input id="'+map[k][c][g]["id"]+'" class="goalcheck '+k.replace(/\W+/g,"-")+"\" type=\"checkbox\" name=\"goal\" value=\""+ encodeURIComponent(JSON.stringify(map[k][c][g]))+ "\"/>" + map[k][c][g]["name"] + "</label>" ;
               template += goal;
             }
             template += "</div></div>";
@@ -352,7 +378,18 @@ data = {
                         goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
                       }
         goalTile += `
-                      </h1></div>
+                      </h1><p>`;
+                      if(goalInfo[i]["unit"] == "percent") {
+                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
+                      }
+                      else if(goalInfo[i]["unit"] == "dollars"){
+                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + addCommas(goalInfo[i]["target"][1]);
+                      }
+                      else {
+                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + addCommas(goalInfo[i]["target"][1]);
+                      }
+
+                      goalTile += `</p></div>
                       <div class="footer">
                           <div class="chart-legend">
                               <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`

@@ -17,6 +17,32 @@ visuals = {
     },
 
     initChartist: function(d, t, goalId, budget){
+    function ctPointLabels(options) {
+      return function ctPointLabels(chart) {
+      var defaultOptions = {
+        labelClass: 'ct-label',
+        labelOffset: {
+          x: 0,
+          y: -15
+        },
+        textAnchor: 'middle'
+      };
+
+      options = Chartist.extend({}, defaultOptions, options);
+
+      if(chart instanceof Chartist.Bar) {
+        chart.on('draw', function(data) {
+          if(data.type === 'bar' && data.seriesIndex == 1) {
+            data.group.elem('text', {
+              x: data.x2 + options.labelOffset.x,
+              y: data.y1 + options.labelOffset.y,
+                style: 'text-anchor: ' + options.textAnchor
+            }, options.labelClass).text("$"+addCommas(data.value.x));
+          }
+        });
+      }
+    }
+  }
       function addCommas(nStr) {
           nStr += '';
           if(nStr == 'NaN') {
@@ -51,10 +77,14 @@ visuals = {
           low:0,
           ticks:[0, budget["budget"]]
         },
-
         axisY: {
           offset: 70
-        }
+        },
+        plugins: [
+          ctPointLabels({
+            textAnchor: 'middle'
+          })
+        ]
         });
 
         var data = {
@@ -85,6 +115,7 @@ visuals = {
         Chartist.Line(goal, data, options);
 
     },
+
     newChart: function(d, t, goalId) {
       var data = {
             series: [

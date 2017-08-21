@@ -1,3 +1,8 @@
+.ct-series-b .ct-line {
+  stroke-width: 3px;
+  stroke-dasharray: 5px 4px;
+}
+
 .navbar-index {
   display:none;
 }
