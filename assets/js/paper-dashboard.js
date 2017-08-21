@@ -39,7 +39,7 @@ $(window).resize(function(){
         $("nav").show();
     } else {
       $('.backtodashMobile').hide();
-      $(".navbar").hide();
+      $(".navbar-index").hide();
     }
 });
 
