@@ -97,10 +97,10 @@
 			    return false;
 			}
 			//FOR DEVELOPMENT
-			var id = cacheID();
+			//var id = cacheID();
+			//console.log(id);
 
-
-			if(cacheJS.get(id) === null && !getCookie("cached")) {
+			if(cacheJS.get("data") === null) {
 				var goalArray = [];
 				// Do the initial data pull
 				var values = data.initData(goal_base);
@@ -110,10 +110,12 @@
 				var chartData = "";
 				ontarget = values[1];
 
+
 				// Cache data for future use
-        cacheJS.set(id,goalArray);
+				console.log(goalArray);
+        cacheJS.set("data", goalArray);
 				cacheJS.set("newData", goalArray);
-				setCookie("cached",id,1);
+				//setCookie("cached",id,0.5);
 			} else {
 				// Reset the data based on what the user has selected
         var goalArray = cacheJS.get("newData");
@@ -192,7 +194,7 @@
 
   <div class="main-panel">
   <!--Display the hamburger menu on mobile-->
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-index">
     	<div class="container-fluid">
     			<div class="navbar-header">
     					<button type="button" class="navbar-toggle">

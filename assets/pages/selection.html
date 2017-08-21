@@ -59,11 +59,10 @@
 						}
 						return false;
 				}
+				//var id = getCookie("cached");
 
-				if(getCookie("cached") != false) {
-					var id = getCookie("cached");
-					var m = cacheJS.get(id);
-				}
+				var m = cacheJS.get("data");
+
 				data.selectionContent(m);
 
 				// Select All Goals
@@ -100,7 +99,7 @@
 					var all = $( "input[type='checkbox']:checked" ).length == $( "input[type='checkbox']" ).length ? true : false;
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
-						var newGoals = cacheJS.get(id)
+						var newGoals = cacheJS.get("data");
 						cacheJS.set("newData",newGoals);
 					} else {
 						var newGoals = [];
