@@ -54,6 +54,9 @@ data = {
               if(measure == "good" || measure == "within_tolerance") {
                 goalInfo["ontarget"] = 1;
               }
+              if(measure == "no_judgement") {
+                goalInfo["ontarget"] = 2;
+              }
             } catch(e) {
               goalInfo["ontarget"] = 0;
             }
@@ -93,6 +96,7 @@ data = {
     function getGoals(base, d_id, dashboard) {
       var d_url = base + "/api/stat/v1/dashboards/" + d_id + ".json";
       var ontarget = 0;
+      var offtarget = 0;
       var goalArray = [];
       $.ajax({
           url: d_url,
@@ -105,12 +109,17 @@ data = {
               for(var k in goals) {
                 var goalInfo = getGoalInfo(base, goals[k]['id'],dashboard, categories[j]["name"], d_id, categories[j]["id"])
                 goalArray.push(goalInfo);
-                ontarget += goalInfo["ontarget"];
+                if(goalInfo["ontarget"] === 1) {
+                  ontarget += goalInfo["ontarget"];
+                }
+                if(goalInfo["ontarget"] === 0) {
+                  offtarget += 1;
+                }
               }
             }
           }
       });
-      return [goalArray,ontarget];
+      return [goalArray,ontarget,offtarget];
     }
     function getExpenseAmount(url, primary, year, fy) {
       var e_url = "";
@@ -135,6 +144,7 @@ data = {
     var goalArray = Array();
     var count = 0;
     var ontarget = 0;
+    var offtarget = 0;
     var car = "";
     var txt = "";
 
@@ -149,24 +159,43 @@ data = {
             values = getGoals(base, d_id, dashboard);
             goalArray.push.apply(goalArray,values[0]);
             ontarget += values[1];
+            offtarget += values[2]
           }
         }
       });
-      return [goalArray,ontarget];
+      return [goalArray,ontarget, offtarget];
     },
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();
+    },
+    computeOffTarget: function(offtarget) {
+      document.getElementById("offtarget").innerHTML = "<p>Off Target</p>"+offtarget.toString();
     },
     newOnTarget: function(goalArray) {
       var ontarget = 0;
       for(i in goalArray) {
         try {
-          ontarget += goalArray[i]["ontarget"];
+          if(goalArray[i]["ontarget"] === 1){
+            ontarget += goalArray[i]["ontarget"];
+          }
         } catch(e) {
           ontarget += 0;
         }
       }
       return ontarget;
+    },
+    newOffTarget: function(goalArray) {
+      var offtarget = 0;
+      for(i in goalArray) {
+        try {
+          if(goalArray[i]["ontarget"] === 0) {
+            offtarget += 1;
+          }
+        } catch(e) {
+          offtarget += 0;
+        }
+      }
+      return offtarget;
     },
     computeCount: function(goalArray) {
       document.getElementById("goals").innerHTML = "<p>Goals</p>"+goalArray.length.toString();
@@ -222,7 +251,7 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`">Link to goal</a>
+                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`" target="_blank">Link to goal</a>
                           </div>
                       </div>
                     </div>
@@ -309,7 +338,7 @@ data = {
       for(var i in goalInfo) {
         goalTile=
         `  <div class="col-sm-3">
-                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`" style="height:250px">
+                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
                     <div class="header">
                       <h4 class="title">`+goalInfo[i]["name"]+`</h4>
                     </div>
@@ -335,7 +364,7 @@ data = {
                           </div>
                           <hr>
                           <div class="stats">
-                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`">Link to Goal</a>
+                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`" target="_blank">Link to Goal</a>
                           </div>
                       </div>
                     </div>

@@ -108,7 +108,8 @@
 				// Set data values
 				var goalArray = values[0];
 				var chartData = "";
-				ontarget = values[1];
+				var ontarget = values[1];
+				var offtarget = values[2]
 
 
 				// Cache data for future use
@@ -120,9 +121,11 @@
 				// Reset the data based on what the user has selected
         var goalArray = cacheJS.get("newData");
         ontarget = data.newOnTarget(goalArray);
+				offtarget = data.newOffTarget(goalArray);
 			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
+			data.computeOffTarget(offtarget);
 			data.computeContent(goalArray);
 			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id']);
 
@@ -253,7 +256,7 @@
 																	</div>
 															</div>
 															<div class="col-xs-7">
-																<a href="assets/pages/goalboard.html">
+																<a href="assets/pages/ontargetboard.html">
 																	<div id="ontarget" class="numbers">
 																	</div>
 																</a>
@@ -272,10 +275,8 @@
 																	</div>
 															</div>
 															<div class="col-xs-7">
-																<a href="assets/pages/goalboard.html">
+																<a href="assets/pages/offtargetboard.html">
 																	<div id="offtarget" class="numbers">
-																		<p>Off Target</p>
-																		114
 																	</div>
 																</a>
 															</div>
