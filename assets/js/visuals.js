@@ -16,7 +16,46 @@ visuals = {
         });
     },
 
-    initChartist: function(d, t, goalId){
+    initChartist: function(d, t, goalId, budget){
+      function addCommas(nStr) {
+          nStr += '';
+          if(nStr == 'NaN') {
+            return 'N/A';
+          }
+          var x = nStr.split('.');
+          var x1 = x[0];
+          var x2 = x.length > 1 ? '.' + x[1] : '';
+          var rgx = /(\d+)(\d{3})/;
+          while (rgx.test(x1)) {
+              x1 = x1.replace(rgx, '$1' + ',' + '$2');
+          }
+          return x1 + x2;
+      }
+
+
+      new Chartist.Bar('#budget-chart', {
+        labels: ['Expense to Budget'],
+        series: [
+          [+budget["expenses"]],
+          [+budget["budget"]]
+        ]
+        }, {
+        seriesBarDistance: 0,
+        reverseData: true,
+        horizontalBars: true,
+        axisX: {
+          labelInterpolationFnc: function(value) {
+            return "$"+addCommas(value);
+          },
+          type: Chartist.FixedScaleAxis,
+          low:0,
+          ticks:[0, budget["budget"]]
+        },
+
+        axisY: {
+          offset: 70
+        }
+        });
 
         var data = {
               series: [

@@ -13,7 +13,7 @@
 .ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {
   display: inline-block;
   width: auto !important;
-  transform: translateX(-50%)
+  transform: translateX(-100%)
 }
 #banner {
   width: 100%;

@@ -64,6 +64,7 @@
 
     $(document).ready(function(){
 			var goal_base = "https://performance.fultoncountyga.gov";
+			var budget_base = "https://performance.fultoncountyga.gov/resource/f4hd-3vk4.json?$select=sum(expenditures)%20as%20expenses,sum(current_budgeted)%20as%20budget";
 
 			function cacheID() {
 			  function s4() {
@@ -103,18 +104,18 @@
 			if(cacheJS.get("data") === null) {
 				var goalArray = [];
 				// Do the initial data pull
-				var values = data.initData(goal_base);
+				var values = data.initData(goal_base, budget_base);
 
 				// Set data values
 				var goalArray = values[0];
 				var chartData = "";
 				var ontarget = values[1];
 				var offtarget = values[2]
-
+				var budget = values[3]
 
 				// Cache data for future use
-				console.log(goalArray);
         cacheJS.set("data", goalArray);
+				cacheJS.set("budget",budget);
 				cacheJS.set("newData", goalArray);
 				//setCookie("cached",id,0.5);
 			} else {
@@ -122,12 +123,13 @@
         var goalArray = cacheJS.get("newData");
         ontarget = data.newOnTarget(goalArray);
 				offtarget = data.newOffTarget(goalArray);
+				var budget = cacheJS.get("budget")
 			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
 			data.computeOffTarget(offtarget);
 			data.computeContent(goalArray);
-			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id']);
+			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id'], budget);
 
       //$(".header").fittext();
 
@@ -319,8 +321,8 @@
                       <div class="content">
                           <div class="row">
                               <div class="col-xs-12">
-                                  <div>
-<iframe frameborder='0' border='0' marginwidth='0' marginheight='0' height="325" scrolling="yes" src="https://baltimore.budget.socrata.com/embed/barchart?branch_type=opex&current_entity=null&year=2016&child_entity=org1&sort_field=total&sort=desc&sourceUrl=https%3A%2F%2Fbaltimore.budget.socrata.com%2F%23!%2Fyear%2F2016%2Foperating%2F0%2Fservice%3Fvis%3DbarChart&type=content" width="100%"></iframe>
+                                  <div id="budget-chart">
+<!--<iframe frameborder='0' border='0' marginwidth='0' marginheight='0' height="325" scrolling="yes" src="https://baltimore.budget.socrata.com/embed/barchart?branch_type=opex&current_entity=null&year=2016&child_entity=org1&sort_field=total&sort=desc&sourceUrl=https%3A%2F%2Fbaltimore.budget.socrata.com%2F%23!%2Fyear%2F2016%2Foperating%2F0%2Fservice%3Fvis%3DbarChart&type=content" width="100%"></iframe>-->
 																		</div>
   														</div>
   												</div>

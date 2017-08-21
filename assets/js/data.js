@@ -1,6 +1,6 @@
 t = "";
 data = {
-  initData: function(base, budgetBase) {
+  initData: function(base, b_url) {
     function getGoalInfo(base, g_id, dashboard, category, d_id, c_id) {
       var g_url = base + "/api/stat/v1/goals/" + g_id + ".json";
       var goalInfo = {"ontarget":0};
@@ -121,24 +121,18 @@ data = {
       });
       return [goalArray,ontarget,offtarget];
     }
-    function getExpenseAmount(url, primary, year, fy) {
-      var e_url = "";
-      if(fy == "All Years") {
-        e_url = url + "?$select=sum("+primary+") as _sum,"+year+"&$group="+year+"&$order="+year+" DESC";
-      } else {
-        e_url = url + "?$select=sum("+primary+") as _sum&$where="+year+"="+fy;
-      }
+    function getExpenseAmount(url) {
+      var e_url = url;
+      var budget = {};
       $.ajax({
           url: e_url,
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader("Authorization","Basic c3RhZ2luZzpzdGFnaW5n");
-          },
           async: false,
-          dataType: 'jsonp',
+          dataType: 'json',
           success: function(data) {
-            return data[0]["_sum"]
+            budget = data[0]
           }
         });
+        return budget;
     }
     var goal_url = base + "/api/stat/v1/dashboards.json";
     var goalArray = Array();
@@ -163,7 +157,8 @@ data = {
           }
         }
       });
-      return [goalArray,ontarget, offtarget];
+      var budget = getExpenseAmount(b_url);
+      return [goalArray,ontarget, offtarget, budget];
     },
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();
