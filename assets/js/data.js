@@ -380,13 +380,13 @@ data = {
         goalTile += `
                       </h1><p>`;
                       if(goalInfo[i]["unit"] == "percent") {
-                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
                       }
                       else if(goalInfo[i]["unit"] == "dollars"){
-                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + addCommas(goalInfo[i]["target"][1]);
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + addCommas(goalInfo[i]["target"][1]);
                       }
                       else {
-                        goalTile += goalInfo[i]["target"][1] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + addCommas(goalInfo[i]["target"][1]);
+                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + addCommas(goalInfo[i]["target"][1]);
                       }
 
                       goalTile += `</p></div>
