@@ -2,10 +2,6 @@
   stroke-width: 3px;
   stroke-dasharray: 5px 4px;
 }
-
-.navbar-index {
-  display:none;
-}
 #goalinfo {
   /*height:350px;*/
   text-align: center;
@@ -69,7 +65,9 @@ ul h1 {
         margin-bottom: 40px;
         position: relative;
     }
-
+    .navbar-index {
+      display:none;
+    }
     .typo-line .category{
         transform: translateY(-50%);
         top: 50%;
@@ -93,6 +91,9 @@ ul h1 {
 @media only screen and (max-width: 780px) and (min-width: 600px){
   h4.title {
     font-size: 2vw;
+  }
+  #nav-index {
+    display: block;
   }
 }
 .ct-series.ct-series-c .ct-line {
