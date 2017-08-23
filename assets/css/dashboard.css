@@ -30,6 +30,10 @@
 input[type="submit"] {
   background: #00f8fc;
 }
+.logo {
+  height:100%;
+  width:100%;
+}
 .logo img {
   margin: 0 auto;
   height:150px;
