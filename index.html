@@ -142,7 +142,7 @@
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 7000,
+        autoplaySpeed: 1000,
         prevArrow:'',
         nextArrow:'',
       });
@@ -153,6 +153,20 @@
           i = 0;
         }
       });
+			$("#play").hide();
+			$('#pause').click(function() {
+				console.log("PAUSED");
+				$('.carousel').slick('slickPause');
+				$("#pause").hide();
+				$("#play").show();
+			});
+			$('#play').click(function() {
+				console.log("PLAY");
+				$('.carousel').slick('slickPlay');
+				$("#play").hide();
+				$("#pause").show()
+
+			});
 		});
 	</script>
 </head>
@@ -195,6 +209,14 @@
 										<i class="ti-settings gear"></i>
 										<p></p>
 									</a>
+								</li>
+								<li class="active-pro">
+									<i class="ti-control-pause" id="pause"></i>
+									<p></p>
+								</li>
+								<li class="active-pro">
+									<i class="ti-control-play" id="play"></i>
+									<p></p>
 								</li>
             </ul>
     	</div>

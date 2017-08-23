@@ -88,18 +88,29 @@ data = {
             // Get the current graph values
             goalInfo["data"] = [];
             goalInfo["target_data"] = [];
-            try {
-              for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
-                var t = {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
-                var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
-                         x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
-                       };
-                goalInfo["data"].push(d);
-                goalInfo["target_data"].push(t);
+            try{
+              var len = data["prevailing_measure"]["computed_values"]["metric"]["date_values"].length;
+              if(len > 1) {
+                for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
+                  var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
+                  var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
+                           x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
+                         };
+                  goalInfo["data"].push(d);
+                  goalInfo["target_data"].push(t);
+                }
+              } else {
+                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}] : [{y:null, x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])}];
+                var d = [{y:null, x: Date.parse(goalInfo["updated"])},
+                        {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
+                         x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])
+                       }];
+                goalInfo["data"] = d;
+                goalInfo["target_data"] = t;
               }
             } catch(e) {
-              goalInfo["Y"] = [0];
-              goalInfo["X"] = [0];
+              goalInfo["data"] = [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}];
+              goalInfo["target_data"] = [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}];
             }
           }
         });
