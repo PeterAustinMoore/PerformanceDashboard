@@ -143,14 +143,14 @@
 					var none = formData.length === 0 ? true : false;
 					if(all || none) {
 						var newGoals = cacheJS.get("data");
-						cacheJS.set("newData",newGoals);
+						cacheJS.set("newData",newGoals,3600);
 					} else {
 						var newGoals = [];
 						for(i in formData) {
 							var dd = JSON.parse(decodeURIComponent(formData[i]['value']));
 							newGoals.push(dd);
 						}
-						cacheJS.set("newData",newGoals);
+						cacheJS.set("newData",newGoals,3600);
 					}
 				});
 			});

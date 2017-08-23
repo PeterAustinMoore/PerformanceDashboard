@@ -114,9 +114,9 @@
 				var budget = values[3]
 				var measuring = goalArray.length - ontarget - offtarget;
 				// Cache data for future use
-        cacheJS.set("data", goalArray);
-				cacheJS.set("budget",budget);
-				cacheJS.set("newData", goalArray);
+        cacheJS.set("data", goalArray, 3600);
+				cacheJS.set("budget",budget,3600);
+				cacheJS.set("newData", goalArray,3600);
 				//setCookie("cached",id,0.5);
 			} else {
 				// Reset the data based on what the user has selected
