@@ -59,7 +59,7 @@ visuals = {
       }
 
 
-      new Chartist.Bar('#budget-chart', {
+    var chart =  new Chartist.Bar('#budget-chart', {
         labels: ['Expense to Budget'],
         series: [
           [+budget["expenses"]],
@@ -87,6 +87,46 @@ visuals = {
         ]
         });
 
+        chart.on('draw', function(data) {
+  if(data.type === 'bar') {
+    // Get the total path length in order to use for dash array animation
+    var pathLength = data.element._node.getTotalLength();
+
+    // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+    data.element.attr({
+      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+    });
+
+    // Create animation definition while also assigning an ID to the animation for later sync usage
+    var animationDefinition = {
+      'stroke-dashoffset': {
+        id: 'anim' + data.index,
+        dur: 2000,
+        from: pathLength + 'px',
+        to:  '0px',
+        easing: Chartist.Svg.Easing.easeOutQuint,
+        // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+        fill: 'freeze'
+      }
+    };
+
+    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+    if(data.index !== 0) {
+      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+    }
+
+    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+    data.element.attr({
+      'stroke-dashoffset': "0px"//-pathLength + 'px'
+    });
+
+    // We can't use guided mode as the animations need to rely on setting begin manually
+    // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+    data.element.animate(animationDefinition, false);
+  }
+});
+
+        // Graphic
         var data = {
               series: [
                 {
@@ -112,7 +152,81 @@ visuals = {
           };
 
         var goal = '#goal-'+goalId;
-        Chartist.Line(goal, data, options);
+        var linechart = Chartist.Line(goal, data, options);
+        // Let's put a sequence number aside so we can use it in the event callbacks
+        var seq = 0,
+          delays = 40,
+          durations = 200;
+
+        // Once the chart is fully created we reset the sequence
+        linechart.on('created', function() {
+          seq = 0;
+        });
+        // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
+        linechart.on('draw', function(data) {
+          seq++;
+
+          if(data.type === 'line') {
+            // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
+            data.element.animate({
+              opacity: {
+                // The delay when we like to start the animation
+                begin: seq * delays + 1000,
+                // Duration of the animation
+                dur: durations,
+                // The value where the animation should start
+                from: 0,
+                // The value where it should end
+                to: 1
+              }
+            });
+          } else if(data.type === 'label' && data.axis === 'x') {
+            data.element.animate({
+              y: {
+                begin: seq * delays,
+                dur: durations,
+                from: data.y + 100,
+                to: data.y,
+                // We can specify an easing function from Chartist.Svg.Easing
+                easing: 'easeOutQuart'
+              }
+            });
+          } else if(data.type === 'label' && data.axis === 'y') {
+            data.element.animate({
+              x: {
+                begin: seq * delays,
+                dur: durations,
+                from: data.x - 100,
+                to: data.x,
+                easing: 'easeOutQuart'
+              }
+            });
+          } else if(data.type === 'point') {
+            data.element.animate({
+              x1: {
+                begin: seq * delays,
+                dur: durations,
+                from: data.x - 10,
+                to: data.x,
+                easing: 'easeOutQuart'
+              },
+              x2: {
+                begin: seq * delays,
+                dur: durations,
+                from: data.x - 10,
+                to: data.x,
+                easing: 'easeOutQuart'
+              },
+              opacity: {
+                begin: seq * delays,
+                dur: durations,
+                from: 0,
+                to: 1,
+                easing: 'easeOutQuart'
+              }
+            });
+          } 
+        });
 
     },
 
@@ -141,6 +255,80 @@ visuals = {
           low:0
         };
 
-      Chartist.Line("#goal-"+goalId, data, options);
+      var linechart = Chartist.Line("#goal-"+goalId, data, options);
+
+      var seq = 0,
+        delays = 40,
+        durations = 200;
+
+      // Once the chart is fully created we reset the sequence
+      linechart.on('created', function() {
+        seq = 0;
+      });
+      // On each drawn element by Chartist we use the Chartist.Svg API to trigger SMIL animations
+      linechart.on('draw', function(data) {
+        seq++;
+
+        if(data.type === 'line') {
+          // If the drawn element is a line we do a simple opacity fade in. This could also be achieved using CSS3 animations.
+          data.element.animate({
+            opacity: {
+              // The delay when we like to start the animation
+              begin: seq * delays + 1000,
+              // Duration of the animation
+              dur: durations,
+              // The value where the animation should start
+              from: 0,
+              // The value where it should end
+              to: 1
+            }
+          });
+        } else if(data.type === 'label' && data.axis === 'x') {
+          data.element.animate({
+            y: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.y + 100,
+              to: data.y,
+              // We can specify an easing function from Chartist.Svg.Easing
+              easing: 'easeOutQuart'
+            }
+          });
+        } else if(data.type === 'label' && data.axis === 'y') {
+          data.element.animate({
+            x: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.x - 100,
+              to: data.x,
+              easing: 'easeOutQuart'
+            }
+          });
+        } else if(data.type === 'point') {
+          data.element.animate({
+            x1: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.x - 10,
+              to: data.x,
+              easing: 'easeOutQuart'
+            },
+            x2: {
+              begin: seq * delays,
+              dur: durations,
+              from: data.x - 10,
+              to: data.x,
+              easing: 'easeOutQuart'
+            },
+            opacity: {
+              begin: seq * delays,
+              dur: durations,
+              from: 0,
+              to: 1,
+              easing: 'easeOutQuart'
+            }
+          });
+        }
+      });
     }
 }
