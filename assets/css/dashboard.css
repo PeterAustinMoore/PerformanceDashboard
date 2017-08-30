@@ -66,10 +66,16 @@ ul h1 {
   background: #ef5656;
   height:90px;
 }
+h1.title {
+  text-align: center;
+  line-height: 130px;
+  vertical-align: middle;
+}
 #current_value {
   text-align:center;
   height:175px;
 }
+
 
 @media (min-width: 992px){
     .typo-line{
