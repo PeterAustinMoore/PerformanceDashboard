@@ -152,7 +152,7 @@ data = {
           async: false,
           dataType: 'json',
           success: function(data) {
-            budget = data[0]
+            budget = data
           }
         });
         return budget;
@@ -247,9 +247,11 @@ data = {
             <div class="row">
                 <div class="col-md-4">
                   <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
-                    <div class="header">
-                      <h3 class="title">`+goalInfo[i]["name"]+`</h3>
-                    </div>
+                    <a href='`+goalInfo[i]["url"]+`' target="_blank">
+                      <div class="header">
+                          <h3 class="title">`+goalInfo[i]["name"]+`</h3>
+                      </div>
+                    </a>
                     <div class="content">
                       <div id="current_value"><h1 class="title">
                         `;

@@ -64,39 +64,8 @@
 
     $(document).ready(function(){
 			var goal_base = "https://performance.fultoncountyga.gov";
-			var budget_base = "https://performance.fultoncountyga.gov/resource/f4hd-3vk4.json?$select=sum(expenditures)%20as%20expenses,sum(current_budgeted)%20as%20budget";
+			var budget_base = "https://performance.fultoncountyga.gov/resource/f4hd-3vk4.json?$select=sum(expenditures)%20as%20expenses,sum(current_budgeted)%20as%20budget&$group=type&$order=budget%20DESC";
 
-			function cacheID() {
-			  function s4() {
-			    return Math.floor((1 + Math.random()) * 0x10000)
-			      .toString(16)
-			      .substring(1);
-			  }
-			  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-			    s4() + '-' + s4() + s4() + s4();
-			}
-
-			function setCookie(cname, cvalue, exdays) {
-			    var d = new Date();
-			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-			    var expires = "expires="+ d.toUTCString();
-			    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-			}
-			function getCookie(cname) {
-			    var name = cname + "=";
-			    var decodedCookie = decodeURIComponent(document.cookie);
-			    var ca = decodedCookie.split(';');
-			    for(var i = 0; i <ca.length; i++) {
-			        var c = ca[i];
-			        while (c.charAt(0) == ' ') {
-			            c = c.substring(1);
-			        }
-			        if (c.indexOf(name) == 0) {
-			            return c.substring(name.length, c.length);
-			        }
-			    }
-			    return false;
-			}
 			//FOR DEVELOPMENT
 			//var id = cacheID();
 			//console.log(id);
@@ -115,8 +84,8 @@
 				var measuring = goalArray.length - ontarget - offtarget;
 				// Cache data for future use
         cacheJS.set("data", goalArray, 3600);
-				cacheJS.set("budget",budget,3600);
-				cacheJS.set("newData", goalArray,3600);
+				cacheJS.set("budget", budget, 3600);
+				cacheJS.set("newData", goalArray, 3600);
 				//setCookie("cached",id,0.5);
 			} else {
 				// Reset the data based on what the user has selected
@@ -130,7 +99,6 @@
 			data.computeOnTarget(ontarget);
 			data.computeOffTarget(offtarget);
 			data.computeMeasuring(measuring);
-			console.log(goalArray);
 			data.computeContent(goalArray);
 			visuals.initChartist(goalArray[0]["data"], goalArray[0]["target_data"], goalArray[0]['id'], budget);
 
@@ -155,17 +123,14 @@
       });
 			$("#play").hide();
 			$('#pause').click(function() {
-				console.log("PAUSED");
 				$('.carousel').slick('slickPause');
 				$("#pause").hide();
 				$("#play").show();
 			});
 			$('#play').click(function() {
-				console.log("PLAY");
 				$('.carousel').slick('slickPlay');
 				$("#play").hide();
 				$("#pause").show()
-
 			});
 		});
 	</script>
@@ -204,6 +169,25 @@
 										</tr>
 									</table>
 								</li>
+								<li>
+									<h1>September</h1>
+									<table>
+										<tr>
+											<th>All People Trust Government</th>
+										</tr>
+										<tr>
+											<td>
+												<ol style="list-style-type:disc">
+													<li>Performance Management Report</li>
+													<li>Presentation: IT Reorganization Update</li>
+													<li>Presentation: Infrastructure for All Update</li>
+													<li>Presentation: Customer Service Program and Training Update</li>
+													<li>Approval: HR Pay for Performance Model</li>
+												</ol>
+											</td>
+										</tr>
+							</table>
+						</li>
 								<li class="active-pro">
 									<a href="assets/pages/selection.html">
 										<i class="ti-settings gear"></i>
@@ -321,6 +305,19 @@
               <div class="col-lg-8">
                   <div class="card">
                       <div class="content">
+												<div class="row">
+														<div class="col-xs-12">
+																<div>
+																	<p>Budget At-A-Glance</p>
+																</div>
+														</div>
+													</div>
+													<div class="row">
+															<div class="col-xs-12">
+																	<div id="total-chart">
+																	</div>
+															</div>
+													</div>
                           <div class="row">
                               <div class="col-xs-12">
                                   <div id="budget-chart">

@@ -58,12 +58,92 @@ visuals = {
           return x1 + x2;
       }
 
+      expenses = [];
+      budgets = [];
+      total_b = 0;
+      total_e = 0;
+      for(i in budget) {
+        total_b += +budget[i]["expenses"];
+        total_e += +budget[i]["budget"];
+        expenses.push(+budget[i]["expenses"])
+        budgets.push(+budget[i]["budget"])
+      }
+      console.log(total_b);
+      console.log(total_e);
+      var total =  new Chartist.Bar('#total-chart', {
 
+          labels: ["Total"],
+          series: [
+            [total_b],
+            [total_e]
+          ]
+          }, {
+          seriesBarDistance: 0,
+          reverseData: true,
+          horizontalBars: true,
+          axisX: {
+            labelInterpolationFnc: function(value) {
+              return "$"+addCommas(value);
+            },
+            type: Chartist.FixedScaleAxis,
+            low:0,
+            ticks:[0, total_e]
+          },
+          height:75,
+          axisY: {
+            offset: 70
+          },
+          plugins: [
+            ctPointLabels({
+              textAnchor: 'middle'
+            })
+          ]
+          });
+
+          total.on('draw', function(data) {
+    if(data.type === 'bar') {
+      // Get the total path length in order to use for dash array animation
+      var pathLength = data.element._node.getTotalLength();
+
+      // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+      data.element.attr({
+        'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+      });
+
+      // Create animation definition while also assigning an ID to the animation for later sync usage
+      var animationDefinition = {
+        'stroke-dashoffset': {
+          id: 'anim' + data.index,
+          dur: 2000,
+          from: pathLength + 'px',
+          to:  '0px',
+          easing: Chartist.Svg.Easing.easeOutQuint,
+          // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+          fill: 'freeze'
+        }
+      };
+
+      // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+      if(data.index !== 0) {
+        animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+      }
+
+      // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+      data.element.attr({
+        'stroke-dashoffset': "0px"//-pathLength + 'px'
+      });
+
+      // We can't use guided mode as the animations need to rely on setting begin manually
+      // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+      data.element.animate(animationDefinition, false);
+    }
+  });
     var chart =  new Chartist.Bar('#budget-chart', {
-        labels: ['Expense to Budget'],
+
+        labels: ['Operating',"Personnel"],
         series: [
-          [+budget["expenses"]],
-          [+budget["budget"]]
+          expenses,
+          budgets
         ]
         }, {
         seriesBarDistance: 0,
@@ -75,7 +155,7 @@ visuals = {
           },
           type: Chartist.FixedScaleAxis,
           low:0,
-          ticks:[0, budget["budget"]]
+          ticks:[0, budget[0]["budget"]]
         },
         axisY: {
           offset: 70
@@ -109,11 +189,6 @@ visuals = {
         fill: 'freeze'
       }
     };
-
-    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
-    if(data.index !== 0) {
-      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-    }
 
     // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
     data.element.attr({
@@ -225,7 +300,7 @@ visuals = {
                 easing: 'easeOutQuart'
               }
             });
-          } 
+          }
         });
 
     },

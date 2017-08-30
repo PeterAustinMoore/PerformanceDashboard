@@ -3,7 +3,9 @@
     left:300px;
     bottom: 10px;
 }
-
+.ct-label {
+    color:black;
+}
 .ct-series-b .ct-line {
   stroke-width: 3px;
   stroke-dasharray: 5px 4px;
