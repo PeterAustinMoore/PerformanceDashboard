@@ -6,6 +6,10 @@
 .ct-label {
     color:black;
 }
+text.ct-label {
+  color:black;
+  fill:rgba(0, 0, 0, 1);
+}
 .ct-series-b .ct-line {
   stroke-width: 3px;
   stroke-dasharray: 5px 4px;

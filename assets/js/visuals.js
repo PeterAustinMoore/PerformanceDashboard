@@ -162,7 +162,8 @@ visuals = {
         },
         plugins: [
           ctPointLabels({
-            textAnchor: 'middle'
+            textAnchor: 'middle',
+            textColor: 'black'
           })
         ]
         });
