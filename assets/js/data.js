@@ -93,23 +93,23 @@ data = {
               goalInfo["dateValues"] = data["prevailing_measure"]["computed_values"]["metric"]["date_values"];
               if(len > 1) {
                 for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
-                  var t = goalInfo["target"] == null ? {y:null, x: Date.now() + 100690515} : {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]) + 100690515};
+                  var t = goalInfo["target"] == null ? {y:null, x: Date.now()} : {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
                   var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
-                           x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]) + 100690515
+                           x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
                          };
                   goalInfo["data"].push(d);
                   goalInfo["target_data"].push(t);
                 }
 
               } else {
-                var t = goalInfo["target"] == null ? [{y:null, x: Date.now()}] : [{y: goalInfo["target"][1], x:Date.parse(goalInfo["updated"]) + 100690515},{y: goalInfo["target"][1], x:Date.now()}];
+                var t = goalInfo["target"] == null ? [{y:null, x: Date.now()}] : [{y: goalInfo["target"][1], x:Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x:Date.now()}];
                 var d = [{y:null, x: Date.parse(goalInfo["updated"]) - 15770000000}]
                 if(data["prevailing_measure"]["computed_values"]["metric"]["values"][0] !== null){
                         d.push({y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
                          x: Date.parse(goalInfo["updated"])
                        });
                   } else {
-                    d.push({y:null, Date.parse(goalInfo["updated"])})
+                    d.push({y:null, x:Date.parse(goalInfo["updated"])})
                   }
                 goalInfo["data"] = d;
                 goalInfo["target_data"] = t;

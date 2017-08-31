@@ -32,12 +32,12 @@ visuals = {
 
       if(chart instanceof Chartist.Bar) {
         chart.on('draw', function(data) {
-          if(data.type === 'bar' && data.seriesIndex == 1) {
+          if(data.type === 'bar') {
             data.group.elem('text', {
               x: data.x2 + options.labelOffset.x,
               y: data.y1 + options.labelOffset.y,
                 style: 'text-anchor: ' + options.textAnchor
-            }, options.labelClass).text("$"+addCommas(data.value.x));
+            }, options.labelClass).text("$"+addCommas(data.value.x.toFixed(2)));
           }
         });
       }
@@ -55,6 +55,7 @@ visuals = {
           while (rgx.test(x1)) {
               x1 = x1.replace(rgx, '$1' + ',' + '$2');
           }
+          console.log(nStr);
           return x1 + x2;
       }
 
@@ -65,9 +66,11 @@ visuals = {
       for(i in budget) {
         total_b += +budget[i]["expenses"];
         total_e += +budget[i]["budget"];
+
         expenses.push(+budget[i]["expenses"])
         budgets.push(+budget[i]["budget"])
       }
+      console.log(budgets);
       console.log(total_b);
       console.log(total_e);
       var total =  new Chartist.Bar('#total-chart', {
@@ -87,7 +90,7 @@ visuals = {
             },
             type: Chartist.FixedScaleAxis,
             low:0,
-            ticks:[0, total_e]
+            ticks:[0]
           },
           height:75,
           axisY: {
@@ -95,7 +98,7 @@ visuals = {
           },
           plugins: [
             ctPointLabels({
-              textAnchor: 'middle'
+              textAnchor: 'end'
             })
           ]
           });
@@ -148,6 +151,7 @@ visuals = {
         }, {
         seriesBarDistance: 0,
         reverseData: true,
+
         horizontalBars: true,
         axisX: {
           labelInterpolationFnc: function(value) {
@@ -155,14 +159,15 @@ visuals = {
           },
           type: Chartist.FixedScaleAxis,
           low:0,
-          ticks:[0, budget[0]["budget"]]
+          ticks:[0, Math.ceil((+budget[0]["budget"])/100000000)*100000000]
         },
         axisY: {
+          showGrid: false,
           offset: 70
         },
         plugins: [
           ctPointLabels({
-            textAnchor: 'middle',
+            textAnchor: 'end',
             textColor: 'black'
           })
         ]
@@ -201,7 +206,8 @@ visuals = {
     data.element.animate(animationDefinition, false);
   }
 });
-
+//d.push({x:Date.parse(new Date(2018,0,1)), y:null})
+d.push({x:Date.parse(new Date(2018,6,1)), y:null})
         // Graphic
         var data = {
               series: [
@@ -215,6 +221,7 @@ visuals = {
                 }
               ]
             };
+
           var byDate = d.slice(0);
           byDate.sort(function(a,b) {
               return a.x - b.x;
@@ -239,7 +246,7 @@ visuals = {
         var goal = '#goal-'+goalId;
         var linechart = Chartist.Line(goal, data, options);
         // Let's put a sequence number aside so we can use it in the event callbacks
-        var seq = 0,
+        var seq = 0, // TODO: SLOW THESE DOWN
           delays = 40,
           durations = 200;
 
