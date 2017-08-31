@@ -1,3 +1,9 @@
+#leftnav {
+  display:none;
+}
+#spacer {
+  height:45px;
+}
 .sidebar .nav > li.controller{
     position: absolute;
     left:300px;
@@ -15,8 +21,11 @@ text.ct-label {
   stroke-dasharray: 5px 4px;
 }
 #goalinfo {
-  /*height:350px;*/
+  height:312px;
   text-align: center;
+}
+#goalrow {
+  height:100px;
 }
 .numbers{
   text-align: center;

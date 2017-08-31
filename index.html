@@ -95,6 +95,7 @@
 				var measuring = goalArray.length - ontarget - offtarget;
 				var budget = cacheJS.get("budget")
 			}
+			console.log(goalArray)
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
 			data.computeOffTarget(offtarget);
@@ -107,19 +108,18 @@
 			var i = 1;
       $('.carousel').slick({
         pauseOnHover: false,
+				pauseOnFocus: false,
         slidesToShow: 1,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 12000,
-        prevArrow:'',
-        nextArrow:'',
+				nextArrow:"#rightnav",
+				prevArrow:"#leftnav"
       });
       $('.carousel').on('afterChange', function (event, slick, current) {
-        visuals.newChart(goalArray[i]["data"], goalArray[i]["target_data"], goalArray[i]['id']);
-        i++;
-        if(i == goalArray.length) {
-          i = 0;
-        }
+        visuals.newChart(goalArray[current]["data"], goalArray[current]["target_data"], goalArray[current]['id']);
+				$("#leftnav").show()
+				//$('.carousel').slick("slickSetOption","prevArrow","#leftnav", true);
       });
 			$("#play").hide();
 			$('#pause').click(function() {
@@ -188,6 +188,9 @@
 										</tr>
 							</table>
 						</li>
+						<!-- Not the greatest... but works-->
+						<li id="spacer">
+						</li>
 								<li class="active-pro">
 									<a href="assets/pages/selection.html">
 										<i class="ti-settings gear"></i>
@@ -241,7 +244,7 @@
 														</div>
 													</div>
 													<!-- All Goals and Measuring-->
-													<div class="row">
+													<div class="row" id="goalrow">
 		                              <div class="col-xs-2">
 		                                  <div class="icon-big icon-warning text-center">
 		                                      <i class="ti-dashboard"></i>
@@ -268,7 +271,7 @@
 														</div>
 
 														<!--On and Off target-->
-														<div class="row">
+														<div class="row" id="goalrow">
 																	<div class="col-xs-2">
 																			<div class="icon-big icon-info text-center">
 																					<i class="ti-ruler"></i>
@@ -325,6 +328,11 @@
 																		</div>
   														</div>
   												</div>
+													<div class="row">
+														<div class="chart-legend">
+																<i class="fa fa-circle text-info"></i>Budget<i class="fa fa-circle text-warning"></i>Actual
+														</div>
+													</div>
                       </div>
                   </div>
               </div>
@@ -332,6 +340,8 @@
   				<!-- CAROUSEL PART-->
           <div class="carousel" id="blocks">
           </div>
+					<button id="leftnav">Previous</button>
+					<button id="rightnav">Next</button>
 
   			</div>
       <!--End Content-->

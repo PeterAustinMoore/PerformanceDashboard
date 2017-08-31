@@ -99,11 +99,23 @@ data = {
                   goalInfo["data"].push(d);
                   goalInfo["target_data"].push(t);
                 }
+                d = {y:null, x: Date.parse(new Date().getFullYear() + 1, 11, 31)};
+                goalInfo["data"].push(d);
+                d = {y:null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)};
+                goalInfo["data"].push(d);
+                var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(new Date().getFullYear() + 1, 11, 31)};
+                goalInfo["target_data"].push(t);
+                var t = goalInfo["target"] == null ? {} : {y: null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)};
+                goalInfo["target_data"].push(t);
+
               } else {
-                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}] : [{y:null, x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])}];
+                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}, {y:null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)}] : [{y:goalInfo["target"][1], x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(new Date().getFullYear() + 1, 11, 31)},{y: null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)}];
                 var d = [{y:null, x: Date.parse(goalInfo["updated"])},
                         {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
                          x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])
+                       }, {
+                         y: null,
+                         x: Date.parse(new Date().getFullYear() + 2, 0, 31)
                        }];
                 goalInfo["data"] = d;
                 goalInfo["target_data"] = t;
@@ -227,6 +239,9 @@ data = {
           if(nStr == 'NaN') {
             return 'N/A';
           }
+          if(nStr === null){
+            return 'N/A';
+          }
           var x = nStr.split('.');
           var x1 = x[0];
           var x2 = x.length > 1 ? '.' + x[1] : '';
@@ -255,16 +270,20 @@ data = {
                     <div class="content">
                       <div id="current_value"><h1 class="title">
                         `;
-                        if(goalInfo[i]["unit"] == "percent") {
-                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
-                          goalTile += value === 'N/A' ? value : value + "%";
-                        }
-                        else if(goalInfo[i]["unit"] == "dollars"){
-                          var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
-                          goalTile += value === 'N/A' ? value : "$" + value;
-                        }
-                        else {
-                          goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
+                        if("current_value" in goalInfo[i]) {
+                          if(goalInfo[i]["unit"] == "percent") {
+                            var value = addCommas(goalInfo[i]["current_value"]);
+                            goalTile += value === 'N/A' ? value : value + "%";
+                          }
+                          else if(goalInfo[i]["unit"] == "dollars"){
+                            var value = addCommas(goalInfo[i]["current_value"].toString());
+                            goalTile += value === 'N/A' ? value : "$" + value;
+                          }
+                          else {
+                            goalTile += addCommas(goalInfo[i]["current_value"]);
+                          }
+                        } else {
+                          goalTile += "N/A";
                         }
           goalTile += `
                       </h1><p>`;

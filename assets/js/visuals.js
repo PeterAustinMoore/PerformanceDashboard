@@ -323,7 +323,7 @@ visuals = {
       var options = {
           axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: 5,
+            divisor: d.length - 1,
             labelInterpolationFnc: function(value) {
               return moment(value).format('MMM YYYY');
             }
