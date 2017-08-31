@@ -116,11 +116,11 @@
 				nextArrow:"#rightnav",
 				prevArrow:"#leftnav"
       });
+			// Draw the next visual after the slide changes
       $('.carousel').on('afterChange', function (event, slick, current) {
         visuals.newChart(goalArray[current]["data"], goalArray[current]["target_data"], goalArray[current]['id']);
-				$("#leftnav").show()
-				//$('.carousel').slick("slickSetOption","prevArrow","#leftnav", true);
       });
+			
 			$("#play").hide();
 			$('#pause').click(function() {
 				$('.carousel').slick('slickPause');

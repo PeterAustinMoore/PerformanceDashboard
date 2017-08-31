@@ -99,23 +99,23 @@ data = {
                   goalInfo["data"].push(d);
                   goalInfo["target_data"].push(t);
                 }
-                d = {y:null, x: Date.parse(new Date().getFullYear() + 1, 11, 31)};
+                d = {y:null, x: Date.parse(new Date(new Date().getFullYear(), 11, 31))};
                 goalInfo["data"].push(d);
-                d = {y:null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)};
+                d = {y:null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))};
                 goalInfo["data"].push(d);
-                var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(new Date().getFullYear() + 1, 11, 31)};
+                var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(new Date(new Date().getFullYear(), 11, 31))};
                 goalInfo["target_data"].push(t);
-                var t = goalInfo["target"] == null ? {} : {y: null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)};
+                var t = goalInfo["target"] == null ? {} : {y: null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))};
                 goalInfo["target_data"].push(t);
 
               } else {
-                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}, {y:null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)}] : [{y:goalInfo["target"][1], x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(new Date().getFullYear() + 1, 11, 31)},{y: null, x: Date.parse(new Date().getFullYear() + 2, 0, 31)}];
+                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}, {y:null, x: Date.parse(new Date(new Date().getFullYear(), 0, 31))}] : [{y:goalInfo["target"][1], x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(new Date(new Date().getFullYear(), 11, 31))},{y: null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))}];
                 var d = [{y:null, x: Date.parse(goalInfo["updated"])},
                         {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
                          x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])
                        }, {
                          y: null,
-                         x: Date.parse(new Date().getFullYear() + 2, 0, 31)
+                         x: Date.parse(new Date(new Date().getFullYear() + 1, 0, 31))
                        }];
                 goalInfo["data"] = d;
                 goalInfo["target_data"] = t;
