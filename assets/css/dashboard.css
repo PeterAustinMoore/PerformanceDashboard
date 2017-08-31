@@ -1,5 +1,5 @@
-#leftnav {
-  display:none;
+#rightnav {
+  float:right;
 }
 #spacer {
   height:45px;

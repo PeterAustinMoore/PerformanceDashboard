@@ -120,7 +120,7 @@
       $('.carousel').on('afterChange', function (event, slick, current) {
         visuals.newChart(goalArray[current]["data"], goalArray[current]["target_data"], goalArray[current]['id']);
       });
-			
+
 			$("#play").hide();
 			$('#pause').click(function() {
 				$('.carousel').slick('slickPause');
@@ -340,8 +340,8 @@
   				<!-- CAROUSEL PART-->
           <div class="carousel" id="blocks">
           </div>
-					<button id="leftnav">Previous</button>
-					<button id="rightnav">Next</button>
+					<button id="leftnav">&laquo; Previous</button>
+					<button id="rightnav">Next &raquo;</button>
 
   			</div>
       <!--End Content-->
