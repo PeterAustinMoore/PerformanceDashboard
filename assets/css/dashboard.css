@@ -36,6 +36,11 @@ text.ct-label {
 .ct-series-a .ct-bar {
   stroke-width:20px;
 }
+.ct-label.ct-horizontal.ct-end {
+    display: inline-block;
+    width: auto !important;
+    transform: translateX(-50%);
+}
 .ct-chart-bar.ct-horizontal-bars .ct-label.ct-horizontal.ct-end {
   display: inline-block;
   width: auto !important;

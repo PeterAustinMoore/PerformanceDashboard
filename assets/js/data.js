@@ -90,39 +90,33 @@ data = {
             goalInfo["target_data"] = [];
             try{
               var len = data["prevailing_measure"]["computed_values"]["metric"]["date_values"].length;
+              goalInfo["dateValues"] = data["prevailing_measure"]["computed_values"]["metric"]["date_values"];
               if(len > 1) {
                 for(var m in data["prevailing_measure"]["computed_values"]["metric"]["date_values"]) {
-                  var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])};
+                  var t = goalInfo["target"] == null ? {y:null, x: Date.now() + 100690515} : {y: goalInfo["target"][1], x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]) + 100690515};
                   var d = {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][m],
-                           x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m])
+                           x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][m]) + 100690515
                          };
                   goalInfo["data"].push(d);
                   goalInfo["target_data"].push(t);
                 }
-                d = {y:null, x: Date.parse(new Date(new Date().getFullYear(), 11, 31))};
-                goalInfo["data"].push(d);
-                d = {y:null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))};
-                goalInfo["data"].push(d);
-                var t = goalInfo["target"] == null ? {} : {y: goalInfo["target"][1], x: Date.parse(new Date(new Date().getFullYear(), 11, 31))};
-                goalInfo["target_data"].push(t);
-                var t = goalInfo["target"] == null ? {} : {y: null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))};
-                goalInfo["target_data"].push(t);
 
               } else {
-                var t = goalInfo["target"] == null ? [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}, {y:null, x: Date.parse(new Date(new Date().getFullYear(), 0, 31))}] : [{y:goalInfo["target"][1], x: Date.parse(goalInfo["updated"])},{y: goalInfo["target"][1], x: Date.parse(new Date(new Date().getFullYear(), 11, 31))},{y: null, x: Date.parse(new Date(new Date().getFullYear() + 1, 2, 31))}];
-                var d = [{y:null, x: Date.parse(goalInfo["updated"])},
-                        {y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
-                         x: Date.parse(data["prevailing_measure"]["computed_values"]["metric"]["date_values"][0])
-                       }, {
-                         y: null,
-                         x: Date.parse(new Date(new Date().getFullYear() + 1, 0, 31))
-                       }];
+                var t = goalInfo["target"] == null ? [{y:null, x: Date.now()}] : [{y: goalInfo["target"][1], x:Date.parse(goalInfo["updated"]) + 100690515},{y: goalInfo["target"][1], x:Date.now()}];
+                var d = [{y:null, x: Date.parse(goalInfo["updated"]) - 15770000000}]
+                if(data["prevailing_measure"]["computed_values"]["metric"]["values"][0] !== null){
+                        d.push({y: data["prevailing_measure"]["computed_values"]["metric"]["values"][0],
+                         x: Date.parse(goalInfo["updated"])
+                       });
+                  } else {
+                    d.push({y:null, Date.parse(goalInfo["updated"])})
+                  }
                 goalInfo["data"] = d;
                 goalInfo["target_data"] = t;
               }
             } catch(e) {
-              goalInfo["data"] = [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}];
-              goalInfo["target_data"] = [{y:null, x: moment()._d - 1000}, {y:null, x: Date.now()}];
+              goalInfo["data"] = [{y:null, x: Date.now()}];
+              goalInfo["target_data"] = [{y:null, x: Date.now()}];
             }
           }
         });

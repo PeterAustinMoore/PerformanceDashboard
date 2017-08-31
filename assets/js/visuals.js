@@ -215,14 +215,23 @@ visuals = {
                 }
               ]
             };
-
+          var byDate = d.slice(0);
+          byDate.sort(function(a,b) {
+              return a.x - b.x;
+          });
+          var ticks = []
+          for(d in byDate) {
+            ticks.push(new Date(byDate[d].x))
+          }
+          ticks.push(new Date(2018,0,1))
+          console.log(ticks);
         var options = {
             axisX: {
               type: Chartist.FixedScaleAxis,
-              divisor: 5,
               labelInterpolationFnc: function(value) {
                 return moment(value).format('MMM YYYY');
-              }
+              },
+              ticks:ticks
             },
             low:0
           };
@@ -307,6 +316,8 @@ visuals = {
     },
 
     newChart: function(d, t, goalId) {
+      d.push({x:Date.parse(new Date(2018,0,1)), y:null})
+      d.push({x:Date.parse(new Date(2018,6,1)), y:null})
       var data = {
             series: [
               {
@@ -319,14 +330,23 @@ visuals = {
               }
             ]
           };
-
+          var byDate = d.slice(0);
+          byDate.sort(function(a,b) {
+              return a.x - b.x;
+          });
+          var ticks = []
+          for(d in byDate) {
+            ticks.push(new Date(byDate[d].x))
+          }
+          console.log(ticks);
       var options = {
           axisX: {
             type: Chartist.FixedScaleAxis,
-            divisor: d.length - 1,
+            divisor: byDate.length + 2,
             labelInterpolationFnc: function(value) {
               return moment(value).format('MMM YYYY');
-            }
+            },
+            ticks:ticks
           },
           low:0
         };
