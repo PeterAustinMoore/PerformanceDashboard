@@ -96,6 +96,10 @@
 				var budget = cacheJS.get("budget")
 			}
 			console.log(goalArray)
+			for(a in goalArray) {
+				goalArray[a]["data"] == null ? goalArray[a]["data"] = goalArray[a]["data"] : goalArray[a]["data"].push({x:Date.parse(new Date(2017,11,31)), y:null})
+				goalArray[a]["target"]== null ? goalArray[a]["target"] = goalArray[a]["target"] : goalArray[a]["target"].push({x:Date.parse(new Date(2018,6,1)), y:null})
+			}
 			data.computeCount(goalArray);
 			data.computeOnTarget(ontarget);
 			data.computeOffTarget(offtarget);

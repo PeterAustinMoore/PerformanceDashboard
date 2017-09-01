@@ -55,7 +55,6 @@ visuals = {
           while (rgx.test(x1)) {
               x1 = x1.replace(rgx, '$1' + ',' + '$2');
           }
-          console.log(nStr);
           return x1 + x2;
       }
 
@@ -70,9 +69,6 @@ visuals = {
         expenses.push(+budget[i]["expenses"])
         budgets.push(+budget[i]["budget"])
       }
-      console.log(budgets);
-      console.log(total_b);
-      console.log(total_e);
       var total =  new Chartist.Bar('#total-chart', {
 
           labels: ["Total"],
@@ -106,7 +102,6 @@ visuals = {
           total.on('draw', function(data) {
     if(data.type === 'bar') {
       // Get the total path length in order to use for dash array animation
-      console.log(data);
       var pathLength = data.x2;//data.element._node.getTotalLength();
 
       // Set a dasharray that matches the path length as prerequisite to animate dashoffset
@@ -176,7 +171,6 @@ visuals = {
 
         chart.on('draw', function(data) {
   if(data.type === 'bar') {
-    console.log(data)
     // Get the total path length in order to use for dash array animation
     var pathLength = data.x2; //data.element._node.getTotalLength();
 
@@ -208,8 +202,6 @@ visuals = {
     data.element.animate(animationDefinition, false);
   }
 });
-//d.push({x:Date.parse(new Date(2018,0,1)), y:null})
-d.push({x:Date.parse(new Date(2018,6,1)), y:null})
         // Graphic
         var data = {
               series: [
@@ -223,7 +215,6 @@ d.push({x:Date.parse(new Date(2018,6,1)), y:null})
                 }
               ]
             };
-
           var byDate = d.slice(0);
           byDate.sort(function(a,b) {
               return a.x - b.x;
@@ -232,8 +223,6 @@ d.push({x:Date.parse(new Date(2018,6,1)), y:null})
           for(d in byDate) {
             ticks.push(new Date(byDate[d].x))
           }
-          ticks.push(new Date(2018,0,1))
-          console.log(ticks);
         var options = {
             axisX: {
               type: Chartist.FixedScaleAxis,
@@ -325,8 +314,6 @@ d.push({x:Date.parse(new Date(2018,6,1)), y:null})
     },
 
     newChart: function(d, t, goalId) {
-      d.push({x:Date.parse(new Date(2017,11,31)), y:null})
-      d.push({x:Date.parse(new Date(2018,6,1)), y:null})
       var data = {
             series: [
               {
@@ -348,23 +335,23 @@ d.push({x:Date.parse(new Date(2018,6,1)), y:null})
             ticks.push(new Date(byDate[d].x))
           }
           console.log(ticks);
-      var options = {
-          axisX: {
-            type: Chartist.FixedScaleAxis,
-            divisor: byDate.length + 2,
-            labelInterpolationFnc: function(value) {
-              return moment(value).format('MMM YYYY');
+        var options = {
+            axisX: {
+              type: Chartist.FixedScaleAxis,
+              divisor: byDate.length + 2,
+              labelInterpolationFnc: function(value) {
+                return moment(value).format('MMM YYYY');
+              },
+              ticks:ticks
             },
-            ticks:ticks
-          },
-          low:0
-        };
+            low:0
+          };
 
       var linechart = Chartist.Line("#goal-"+goalId, data, options);
-
+      d = d.slice(-2,1);
       var seq = 0,
         delays = 40,
-        durations = 200;
+        durations = 800;
 
       // Once the chart is fully created we reset the sequence
       linechart.on('created', function() {
