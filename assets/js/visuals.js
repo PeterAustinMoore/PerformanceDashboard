@@ -106,7 +106,8 @@ visuals = {
           total.on('draw', function(data) {
     if(data.type === 'bar') {
       // Get the total path length in order to use for dash array animation
-      var pathLength = data.element._node.getTotalLength();
+      console.log(data);
+      var pathLength = data.x2;//data.element._node.getTotalLength();
 
       // Set a dasharray that matches the path length as prerequisite to animate dashoffset
       data.element.attr({
@@ -175,8 +176,9 @@ visuals = {
 
         chart.on('draw', function(data) {
   if(data.type === 'bar') {
+    console.log(data)
     // Get the total path length in order to use for dash array animation
-    var pathLength = data.element._node.getTotalLength();
+    var pathLength = data.x2; //data.element._node.getTotalLength();
 
     // Set a dasharray that matches the path length as prerequisite to animate dashoffset
     data.element.attr({
@@ -323,7 +325,7 @@ d.push({x:Date.parse(new Date(2018,6,1)), y:null})
     },
 
     newChart: function(d, t, goalId) {
-      d.push({x:Date.parse(new Date(2018,0,1)), y:null})
+      d.push({x:Date.parse(new Date(2017,11,31)), y:null})
       d.push({x:Date.parse(new Date(2018,6,1)), y:null})
       var data = {
             series: [
