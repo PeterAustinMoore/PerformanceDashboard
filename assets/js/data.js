@@ -249,21 +249,20 @@ data = {
       var tiles = "";
       for(var i in goalInfo) {
         var goalTile =
-        `<div><div class="row"><div class="col-md-12"><div class="card"><div class="content">
-          <h2 class="db">`+goalInfo[i]["dashboard"]+`</h2></div></div></div></div>
-          <div class="row"><div class="col-md-12"><div class="card"><div class="content">
-          <h3 class="cat">`+goalInfo[i]["category"]+`</h3></div></div></div></div>
-            <div class="row">
-                <div class="col-md-4">
-                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
-                    <a href='`+goalInfo[i]["url"]+`' target="_blank">
-                      <div class="header">
-                          <h3 class="title">`+goalInfo[i]["name"]+`</h3>
-                      </div>
-                    </a>
-                    <div class="content">
-                      <div id="current_value"><h1 class="title">
-                        `;
+        '<div><div class="row"><div class="col-md-12"><div class="card"><div class="content"> \
+          <h2 class="db">'+goalInfo[i]["dashboard"]+'</h2></div></div></div></div> \
+          <div class="row"><div class="col-md-12"><div class="card"><div class="content"> \
+          <h3 class="cat">'+goalInfo[i]["category"]+'</h3></div></div></div></div> \
+            <div class="row"> \
+                <div class="col-md-4"> \
+                  <div class="card" id="measure-'+goalInfo[i]["ontarget"]+'"> \
+                    <a href="'+goalInfo[i]["url"]+'" target="_blank"> \
+                      <div class="header"> \
+                          <h3 class="title">'+goalInfo[i]["name"]+'</h3> \
+                      </div> \
+                    </a> \
+                    <div class="content"> \
+                      <div id="current_value"><h1 class="title">';
                         if("current_value" in goalInfo[i]) {
                           if(goalInfo[i]["unit"] == "percent") {
                             var value = addCommas(goalInfo[i]["current_value"]);
@@ -279,8 +278,8 @@ data = {
                         } else {
                           goalTile += "N/A";
                         }
-          goalTile += `
-                      </h1><p>`;
+          goalTile += '</h1><p>';
+
                       if(goalInfo[i]["unit"] == "percent") {
                         goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
                       }
@@ -291,42 +290,42 @@ data = {
                         goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + goalInfo[i]["target"][1];
                       }
 
-                      goalTile += `</p></div>
-                      <div class="footer">
-                          <div class="chart-legend">
-                              <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`
-                          </div>
-                          <hr>
-                          <div class="stats">
-                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`" target="_blank">Link to goal</a>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-8">
-                  <div class="card" id="visual">
-                    <div class="header">
-                      <h3 class="title">` + goalInfo[i]["name"]+`</h3>
-                      <p class="category">`+ goalInfo[i]["summary"]+`</p>
-                    </div>
-                    <div class="content">
-                      <div class="chart" id="goal-`+goalInfo[i]['id']+`"></div>
-                      <div class="footer">
-                        <div class="chart-legend">
-                            <i class="fa fa-circle text-info"></i> `+goalInfo[i]["unit"]+`
-                            <i class="fa fa-circle text-warning"></i> Target
-                        </div>
-                        <hr>
-                        <div class="stats">
-                            <i class="ti-calendar"></i> `+goalInfo[i]["updated"]+`
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </div>`;
+                      goalTile += '</p></div> \
+                      <div class="footer"> \
+                          <div class="chart-legend"> \
+                              <i class="fa fa-circle text-info"></i>'+goalInfo[i]["unit"]+' \
+                          </div> \
+                          <hr> \
+                          <div class="stats"> \
+                              <i class="ti-new-window"></i><a href="'+goalInfo[i]["url"]+'" target="_blank">Link to goal</a> \
+                          </div> \
+                      </div> \
+                    </div> \
+                  </div> \
+                </div> \
+                <div class="col-md-8"> \
+                  <div class="card" id="visual"> \
+                    <div class="header"> \
+                      <h3 class="title">' + goalInfo[i]["name"]+'</h3> \
+                      <p class="category">'+ goalInfo[i]["summary"]+'</p> \
+                    </div> \
+                    <div class="content"> \
+                      <div class="chart" id="goal-'+goalInfo[i]['id']+'"></div> \
+                      <div class="footer"> \
+                        <div class="chart-legend"> \
+                            <i class="fa fa-circle text-info"></i> '+goalInfo[i]["unit"]+' \
+                            <i class="fa fa-circle text-warning"></i> Target \
+                        </div> \
+                        <hr> \
+                        <div class="stats"> \
+                            <i class="ti-calendar"></i>'+goalInfo[i]["updated"]+' \
+                        </div> \
+                      </div> \
+                    </div> \
+                  </div> \
+                </div> \
+              </div> \
+              </div>';
 
           tiles += goalTile;
         }
@@ -384,14 +383,13 @@ data = {
       var tiles = '<div class="row">';
       for(var i in goalInfo) {
         goalTile=
-        `  <div class="col-sm-3">
-                  <div class="card" id="measure-`+goalInfo[i]["ontarget"]+`">
-                    <div class="header">
-                      <h4 class="title">`+goalInfo[i]["name"]+`</h4>
-                    </div>
-                    <div class="content">
-                      <div id="current_value"><h1 class="title">
-                      `;
+        '<div class="col-sm-3"> \
+                  <div class="card" id="measure-'+goalInfo[i]["ontarget"]+'"> \
+                    <div class="header"> \
+                      <h4 class="title">'+goalInfo[i]["name"]+'</h4> \
+                    </div> \
+                    <div class="content"> \
+                      <div id="current_value"><h1 class="title">';
                       if(goalInfo[i]["unit"] == "percent") {
                         var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
                         goalTile += value === 'N/A' ? value : value + "%";
@@ -403,8 +401,7 @@ data = {
                       else {
                         goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
                       }
-        goalTile += `
-                      </h1><p>`;
+        goalTile += '</h1><p>';
                       if(goalInfo[i]["unit"] == "percent") {
                         goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
                       }
@@ -414,21 +411,18 @@ data = {
                       else {
                         goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + addCommas(goalInfo[i]["target"][1]);
                       }
-
-                      goalTile += `</p></div>
-                      <div class="footer">
-                          <div class="chart-legend">
-                              <i class="fa fa-circle text-info"></i>`+goalInfo[i]["unit"]+`
-                          </div>
-                          <hr>
-                          <div class="stats">
-                              <i class="ti-new-window"></i><a href="`+goalInfo[i]["url"]+`" target="_blank">Link to Goal</a>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                `;
+                      goalTile += '</p></div> \
+                      <div class="footer"> \
+                          <div class="chart-legend"> \
+                              <i class="fa fa-circle text-info"></i>'+goalInfo[i]["unit"]+' \
+                          </div> \
+                          <hr> \
+                          <div class="stats"> \
+                              <i class="ti-new-window"></i><a href="'+goalInfo[i]["url"]+'" target="_blank">Link to Goal</a> \
+                          </div> \
+                      </div> \
+                  </div> \
+                </div>';
           tiles += goalTile;
         }
         tiles += '</div>'
