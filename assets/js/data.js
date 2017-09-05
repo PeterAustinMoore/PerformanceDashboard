@@ -1,5 +1,21 @@
 t = "";
+/** data.js is the overarching object of functions being used to collect, set, or
+* alter the data
+*/
 data = {
+  /**
+  * Initializes the data by getting a list of all dashboards from there
+  * a list of all goals and categories for that dashboard and finally all of
+  * the data related to that goal. This is the slowest part of the app and is
+  * set to update every hour.
+  * @param {string} base - The base performance url, e.g. performance.city.gov
+  * @param {string} b_url - The base budget dataset url, e.g. data.city.gov/resource/ardd-12dd.json
+  * @return {array} - an array with the
+  * [goalArray - goal data (an object per goal),
+  *  Number of On target,
+  *  Number off target,
+  *  budget data]
+  */
   initData: function(base, b_url) {
     function getGoalInfo(base, g_id, dashboard, category, d_id, c_id) {
       var g_url = base + "/api/stat/v1/goals/" + g_id + ".json";
@@ -150,6 +166,11 @@ data = {
       });
       return [goalArray,ontarget,offtarget];
     }
+    /**
+    * Get expenditures data
+    * @param {string} url - expenses url
+    * @return {object} - object with budget information
+    */
     function getExpenseAmount(url) {
       var e_url = url;
       var budget = {};
@@ -189,15 +210,28 @@ data = {
       var budget = getExpenseAmount(b_url);
       return [goalArray,ontarget, offtarget, budget];
     },
+    /** Sets the HTML for the on target values
+    * @param {int} ontarget - Number of on target goals
+    */
     computeOnTarget: function(ontarget) {
       document.getElementById("ontarget").innerHTML = "<p>On Target</p>"+ontarget.toString();
     },
+    /** Sets the HTML for the on target values
+    * @param {int} offtarget - Number of off target goals
+    */
     computeOffTarget: function(offtarget) {
       document.getElementById("offtarget").innerHTML = "<p>Off Target</p>"+offtarget.toString();
     },
+    /** Sets the HTML for the on target values
+    * @param {int} measuring - Number of measuring target goals
+    */
     computeMeasuring: function(measuring) {
       document.getElementById("measuring").innerHTML = "<p>Measuring</p>"+measuring.toString();
     },
+    /** Recalculate the number of on target goals
+    * @param {array} goalArray - array of post-filtered goal objects
+    * @return {int} - number of on target goals
+    */
     newOnTarget: function(goalArray) {
       var ontarget = 0;
       for(i in goalArray) {
@@ -211,6 +245,10 @@ data = {
       }
       return ontarget;
     },
+    /** Recalculate the number of off target goals
+    * @param {array} goalArray - array of post-filtered goal objects
+    * @return {int} - number of off target goals
+    */
     newOffTarget: function(goalArray) {
       var offtarget = 0;
       for(i in goalArray) {
@@ -224,10 +262,22 @@ data = {
       }
       return offtarget;
     },
+    /** Sets the HTML for the number of total goals
+    * @param {array} goalArray - Complete goal array set
+    */
     computeCount: function(goalArray) {
       document.getElementById("goals").innerHTML = "<p>Goals</p>"+goalArray.length.toString();
     },
-    computeContent: function(goalInfo) {
+    /**
+    * Dynamically create the html string for the goal data as well as the
+    * chart and goal time template
+    * @param {object} goalArray - The goal information object from initData[0]
+    */
+    computeContent: function(goalArray) {
+      /** Add commas to large goal values
+      * @param {string} nStr - Value to add commas to
+      * @return {string}
+      */
       function addCommas(nStr) {
           nStr += '';
           if(nStr == 'NaN') {
@@ -247,57 +297,57 @@ data = {
       }
 
       var tiles = "";
-      for(var i in goalInfo) {
+      for(var i in goalArray) {
         var goalTile =
         '<div><div class="row"><div class="col-md-12"><div class="card"><div class="content"> \
-          <h2 class="db">'+goalInfo[i]["dashboard"]+'</h2></div></div></div></div> \
+          <h2 class="db">'+goalArray[i]["dashboard"]+'</h2></div></div></div></div> \
           <div class="row"><div class="col-md-12"><div class="card"><div class="content"> \
-          <h3 class="cat">'+goalInfo[i]["category"]+'</h3></div></div></div></div> \
+          <h3 class="cat">'+goalArray[i]["category"]+'</h3></div></div></div></div> \
             <div class="row"> \
                 <div class="col-md-4"> \
-                  <div class="card" id="measure-'+goalInfo[i]["ontarget"]+'"> \
-                    <a href="'+goalInfo[i]["url"]+'" target="_blank"> \
+                  <div class="card" id="measure-'+goalArray[i]["ontarget"]+'"> \
+                    <a href="'+goalArray[i]["url"]+'" target="_blank"> \
                       <div class="header"> \
-                          <h3 class="title">'+goalInfo[i]["name"]+'</h3> \
+                          <h3 class="title">'+goalArray[i]["name"]+'</h3> \
                       </div> \
                     </a> \
                     <div class="content"> \
                       <div id="current_value"><h1 class="title">';
-                        if("current_value" in goalInfo[i]) {
-                          if(goalInfo[i]["unit"] == "percent") {
-                            var value = addCommas(goalInfo[i]["current_value"]);
+                        if("current_value" in goalArray[i]) {
+                          if(goalArray[i]["unit"] == "percent") {
+                            var value = addCommas(goalArray[i]["current_value"]);
                             goalTile += value === 'N/A' ? value : value + "%";
                           }
-                          else if(goalInfo[i]["unit"] == "dollars"){
-                            var value = addCommas(goalInfo[i]["current_value"].toString());
+                          else if(goalArray[i]["unit"] == "dollars"){
+                            var value = addCommas(goalArray[i]["current_value"].toString());
                             goalTile += value === 'N/A' ? value : "$" + value;
                           }
                           else {
-                            goalTile += addCommas(goalInfo[i]["current_value"]);
+                            goalTile += addCommas(goalArray[i]["current_value"]);
                           }
                         } else {
                           goalTile += "N/A";
                         }
           goalTile += '</h1><p>';
 
-                      if(goalInfo[i]["unit"] == "percent") {
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
+                      if(goalArray[i]["unit"] == "percent") {
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ goalArray[i]["target"][1] + "%";
                       }
                       else if(goalInfo[i]["unit"] == "dollars"){
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + goalInfo[i]["target"][1];
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ " $" + goalArray[i]["target"][1];
                       }
                       else {
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + goalInfo[i]["target"][1];
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0] + goalArray[i]["target"][1];
                       }
 
                       goalTile += '</p></div> \
                       <div class="footer"> \
                           <div class="chart-legend"> \
-                              <i class="fa fa-circle text-info"></i>'+goalInfo[i]["unit"]+' \
+                              <i class="fa fa-circle text-info"></i>'+goalArray[i]["unit"]+' \
                           </div> \
                           <hr> \
                           <div class="stats"> \
-                              <i class="ti-new-window"></i><a href="'+goalInfo[i]["url"]+'" target="_blank">Link to goal</a> \
+                              <i class="ti-new-window"></i><a href="'+goalArray[i]["url"]+'" target="_blank">Link to goal</a> \
                           </div> \
                       </div> \
                     </div> \
@@ -306,19 +356,19 @@ data = {
                 <div class="col-md-8"> \
                   <div class="card" id="visual"> \
                     <div class="header"> \
-                      <h3 class="title">' + goalInfo[i]["name"]+'</h3> \
-                      <p class="category">'+ goalInfo[i]["summary"]+'</p> \
+                      <h3 class="title">' + goalArray[i]["name"]+'</h3> \
+                      <p class="category">'+ goalArray[i]["summary"]+'</p> \
                     </div> \
                     <div class="content"> \
-                      <div class="chart" id="goal-'+goalInfo[i]['id']+'"></div> \
+                      <div class="chart" id="goal-'+goalArray[i]['id']+'"></div> \
                       <div class="footer"> \
                         <div class="chart-legend"> \
-                            <i class="fa fa-circle text-info"></i> '+goalInfo[i]["unit"]+' \
+                            <i class="fa fa-circle text-info"></i> '+goalArray[i]["unit"]+' \
                             <i class="fa fa-circle text-warning"></i> Target \
                         </div> \
                         <hr> \
                         <div class="stats"> \
-                            <i class="ti-calendar"></i>'+goalInfo[i]["updated"]+' \
+                            <i class="ti-calendar"></i>'+goalArray[i]["updated"]+' \
                         </div> \
                       </div> \
                     </div> \
@@ -331,11 +381,16 @@ data = {
         }
         document.getElementById("blocks").innerHTML = tiles;
     },
-    selectionContent: function(r) {
+    /**
+    * Dynamically create the HTML for the selection filtering page based
+    * off all available goal data
+    * @param {object} goalArray - array of goalInfo objects
+    */
+    selectionContent: function(goalArray) {
       t = '<fieldset id="page" data-role="controlgroup">';
       var map = {}
-      for(var i = 0; i < r.length; i++){
-        var obj = r[i]
+      for(var i = 0; i < goalArray.length; i++){
+        var obj = goalArray[i]
         if(!(obj.dashboard in map)){
           map[obj.dashboard] = {};
         }
@@ -343,8 +398,8 @@ data = {
             map[obj.dashboard][obj.category] = []
           }
       }
-      for(var i = 0; i < r.length; i++) {
-        var obj = r[i];
+      for(var i = 0; i < goalArray.length; i++) {
+        var obj = goalArray[i];
         map[obj.dashboard][obj.category].push(obj);
       }
       for(k in map) {
@@ -364,7 +419,15 @@ data = {
       t += "</fieldset>";
       document.getElementById("blocks").innerHTML = t;
     },
-    computeContentBoard: function(goalInfo) {
+    /**
+    * Content board creation from goalInfo objects
+    * @param {array} goalArray - An array of goalInfo objects from initData
+    */
+    computeContentBoard: function(goalArray) {
+      /** Add commas to large goal values
+      * @param {string} nStr - Value to add commas to
+      * @return {string}
+      */
       function addCommas(nStr) {
           nStr += '';
           if(nStr == 'NaN') {
@@ -380,45 +443,45 @@ data = {
           return x1 + x2;
       }
 
-      var tiles = '<div class="row">';
-      for(var i in goalInfo) {
+      var tiles = '<div class="row d-flex align-items-end flex-column">';
+      for(var i in goalArray) {
         goalTile=
-        '<div class="col-sm-3"> \
-                  <div class="card" id="measure-'+goalInfo[i]["ontarget"]+'"> \
+        '<div class="col-sm-4"> \
+                  <div class="card p-2" id="measure-'+goalArray[i]["ontarget"]+'"> \
                     <div class="header"> \
-                      <h4 class="title">'+goalInfo[i]["name"]+'</h4> \
+                      <h4 class="title">'+goalArray[i]["name"]+'</h4> \
                     </div> \
                     <div class="content"> \
                       <div id="current_value"><h1 class="title">';
-                      if(goalInfo[i]["unit"] == "percent") {
-                        var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                      if(goalArray[i]["unit"] == "percent") {
+                        var value = addCommas(Math.round(goalArray[i]["current_value"]).toString());
                         goalTile += value === 'N/A' ? value : value + "%";
                       }
-                      else if(goalInfo[i]["unit"] == "dollars"){
-                        var value = addCommas(Math.round(goalInfo[i]["current_value"]).toString());
+                      else if(goalArray[i]["unit"] == "dollars"){
+                        var value = addCommas(Math.round(goalArray[i]["current_value"]).toString());
                         goalTile += value === 'N/A' ? value : "$" + value;
                       }
                       else {
-                        goalTile += addCommas(Math.round(goalInfo[i]["current_value"]));
+                        goalTile += addCommas(Math.round(goalArray[i]["current_value"]));
                       }
         goalTile += '</h1><p>';
-                      if(goalInfo[i]["unit"] == "percent") {
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ goalInfo[i]["target"][1] + "%";
+                      if(goalArray[i]["unit"] == "percent") {
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ goalArray[i]["target"][1] + "%";
                       }
                       else if(goalInfo[i]["unit"] == "dollars"){
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0]+ " $" + addCommas(goalInfo[i]["target"][1]);
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ " $" + addCommas(goalArray[i]["target"][1]);
                       }
                       else {
-                        goalTile += goalInfo[i]["target"] == null ? "Measuring" : "Target: " + goalInfo[i]["target"][0] + addCommas(goalInfo[i]["target"][1]);
+                        goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0] + addCommas(goalArray[i]["target"][1]);
                       }
                       goalTile += '</p></div> \
                       <div class="footer"> \
                           <div class="chart-legend"> \
-                              <i class="fa fa-circle text-info"></i>'+goalInfo[i]["unit"]+' \
+                              <i class="fa fa-circle text-info"></i>'+goalArray[i]["unit"]+' \
                           </div> \
                           <hr> \
                           <div class="stats"> \
-                              <i class="ti-new-window"></i><a href="'+goalInfo[i]["url"]+'" target="_blank">Link to Goal</a> \
+                              <i class="ti-new-window"></i><a href="'+goalArray[i]["url"]+'" target="_blank">Link to Goal</a> \
                           </div> \
                       </div> \
                   </div> \
@@ -429,7 +492,17 @@ data = {
         tiles += '</div>'
         document.getElementById("blocks").innerHTML = tiles;
     },
+    /**
+    * Sets the upcoming events side panel
+    * @param {string} eventsUrl - The base url for the events dataset, e.g.
+    * data.city.gov/resource/askl-avav.json
+    */
     setUpcomingEvents: function(eventsUrl) {
+      /** Return the events for a particular month
+      * @param {string} eventsUrl - The events dataset base url
+      * @param {string} month - the particular month
+      * @return {array} - array objects of events [{"event":"Event text"}]
+      */
       function getUpcomingEvents(eventsUrl, month) {
         eventsUrl += "?$where=month='" + month +"'";
         events = [];
@@ -443,6 +516,10 @@ data = {
           });
         return events;
       }
+      /** Return the available months in the dataset
+      * @param {string} eventsUrl - The events dataset base url
+      * @return {array} - array objects of months and priorities [{"month":"Event text","priority":"Priority Text"}]
+      */
       function getMonths(eventsUrl) {
         months = [];
         eventsUrl += "?$select=month, priority&$group=month, priority";
@@ -469,5 +546,6 @@ data = {
         eventsData += '</ol></td></tr></table>';
       }
       document.getElementById("events").innerHTML = eventsData;
+      $(".navbar-left").innerHTML = eventsData;
     }
   };

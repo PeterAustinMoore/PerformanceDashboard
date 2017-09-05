@@ -14,6 +14,7 @@
     <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 		<script src="../js/paper-dashboard.js"></script>
 		<script src="../js/cacheJS.js"></script>
+
 		<!-- Custom JS to retrieve and reset Data -->
 		<script src="../js/data.js"></script>
 
@@ -47,6 +48,10 @@
 				data.setUpcomingEvents(events_base);
 
 				var m = cacheJS.get("data");
+				if(m === null) {
+					window.location.href='../../index.html';
+				}
+
 				data.selectionContent(m);
 
 				// Select All Goals
