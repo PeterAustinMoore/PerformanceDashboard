@@ -428,5 +428,46 @@ data = {
         }
         tiles += '</div>'
         document.getElementById("blocks").innerHTML = tiles;
+    },
+    setUpcomingEvents: function(eventsUrl) {
+      function getUpcomingEvents(eventsUrl, month) {
+        eventsUrl += "?$where=month='" + month +"'";
+        events = [];
+        $.ajax({
+            url: eventsUrl,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+              events = data;
+            }
+          });
+        return events;
+      }
+      function getMonths(eventsUrl) {
+        months = [];
+        eventsUrl += "?$select=month, priority&$group=month, priority";
+        $.ajax({
+            url: eventsUrl,
+            async: false,
+            dataType: 'json',
+            success: function(data) {
+              months = data;
+            }
+          });
+        return months;
+      }
+      months = getMonths(eventsUrl);
+      eventsData = "";
+      for(i in months) {
+        events = getUpcomingEvents(eventsUrl, months[i]["month"]);
+        eventsData += '<h1 style="padding-left:20px;">' + months[i]["month"] + '</h1>';
+        eventsData += '<table><tr><th style="padding-left:20px;">' + months[i]["priority"] + '</th><tr>';
+        eventsData += '<tr><td><ol style="list-style-type:disc">';
+        for(j in events){
+          eventsData += "<li>"+events[j]["event"]+"</li>";
+        }
+        eventsData += '</ol></td></tr></table>';
+      }
+      document.getElementById("events").innerHTML = eventsData;
     }
   };
