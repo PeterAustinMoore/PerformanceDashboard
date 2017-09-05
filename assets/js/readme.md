@@ -1,7 +1,6 @@
 <a name="data"></a>
-<a name="visuals"></a>
 
-## data
+## data.js
 data.js is the overarching object of functions being used to collect, set, or
 alter the data
 
@@ -23,6 +22,19 @@ alter the data
     * [.setUpcomingEvents(eventsUrl)](#data.setUpcomingEvents)
         * [~getUpcomingEvents(eventsUrl, month)](#data.setUpcomingEvents..getUpcomingEvents) ⇒ <code>array</code>
         * [~getMonths(eventsUrl)](#data.setUpcomingEvents..getMonths) ⇒ <code>array</code>
+
+<a name="visuals"></a>
+## visuals.js
+Visual charts object of functions related to rendering the charts
+
+**Kind**: global variable  
+
+* [visuals](#visuals)
+    * [.initPickColor()](#visuals.initPickColor)
+    * [.initChartist(d, t, goalId, budget)](#visuals.initChartist)
+        * [~ctPointLabels(options)](#visuals.initChartist..ctPointLabels) ⇒ <code>function</code>
+        * [~addCommas(nStr)](#visuals.initChartist..addCommas) ⇒ <code>string</code>
+    * [.newChart(d, t, goalId)](#visuals.newChart)
 
 <a name="data.initData"></a>
 
@@ -211,17 +223,7 @@ Return the available months in the dataset
 | --- | --- | --- |
 | eventsUrl | <code>string</code> | The events dataset base url |
 
-## visuals
-Visual charts object of functions related to rendering the charts
 
-**Kind**: global variable  
-
-* [visuals](#visuals)
-    * [.initPickColor()](#visuals.initPickColor)
-    * [.initChartist(d, t, goalId, budget)](#visuals.initChartist)
-        * [~ctPointLabels(options)](#visuals.initChartist..ctPointLabels) ⇒ <code>function</code>
-        * [~addCommas(nStr)](#visuals.initChartist..addCommas) ⇒ <code>string</code>
-    * [.newChart(d, t, goalId)](#visuals.newChart)
 
 <a name="visuals.initPickColor"></a>
 
