@@ -1,3 +1,6 @@
+.ct-series-a .ct-label {
+  transform: translateY(40px);
+}
 #rightnav {
   float:right;
 }

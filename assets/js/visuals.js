@@ -174,7 +174,7 @@ visuals = {
             },
             type: Chartist.FixedScaleAxis,
             low:0,
-            ticks:[0, Math.ceil((+budget[0]["budget"])/100000000)*100000000]
+            ticks:[0]
           },
           axisY: {
             showGrid: false,
