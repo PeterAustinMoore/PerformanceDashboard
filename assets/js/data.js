@@ -422,7 +422,8 @@ data = {
                           </div> \
                       </div> \
                   </div> \
-                </div>';
+                </div> \
+              </div>';
           tiles += goalTile;
         }
         tiles += '</div>'
