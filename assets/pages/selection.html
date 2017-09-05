@@ -43,37 +43,52 @@
 
 		<script>
 			$(document).ready(function(){
-				//FOR DEVELOPMENT
-				function getCookie(cname) {
-						var name = cname + "=";
-						var decodedCookie = decodeURIComponent(document.cookie);
-						var ca = decodedCookie.split(';');
-						for(var i = 0; i <ca.length; i++) {
-								var c = ca[i];
-								while (c.charAt(0) == ' ') {
-										c = c.substring(1);
-								}
-								if (c.indexOf(name) == 0) {
-										return c.substring(name.length, c.length);
-								}
-						}
-						return false;
-				}
-				//var id = getCookie("cached");
-
 				var m = cacheJS.get("data");
-
 				data.selectionContent(m);
 
 				// Select All Goals
 				$("#selectall").click(function(){
 						$( "input[type='checkbox']" ).prop("checked",true);
 						$( ".goalcheck" ).checkboxradio( "refresh" );
+						$(".measuring").css("box-shadow","0 0 12px #38c");
+						$(".ontarget").css("box-shadow","0 0 12px #38c");
+						$(".offtarget").css("box-shadow","0 0 12px #38c");
+						$(".department").css("box-shadow","0 0 12px #38c");
+						$(".strategic").css("box-shadow","0 0 12px #38c");
+
+						$('.strategic').buttonMarkup({ icon: "minus" });
+						$('.department').buttonMarkup({ icon: "minus" });
+						$('.offtarget').buttonMarkup({ icon: "minus" });
+						$('.ontarget').buttonMarkup({ icon: "minus" });
+						$('.measuring').buttonMarkup({ icon: "minus" });
+
+						o_selected = true;
+						d_selected = true;
+						m_selected = true;
+						of_selected = true;
+						s_selected = true;
 				});
 				// Deselect all goals
 				$("#selectsubset").click(function(){
 						$( "input[type='checkbox']" ).prop("checked",false);
 						$( ".goalcheck" ).checkboxradio( "refresh" );
+						$(".measuring").css("box-shadow","none");
+						$(".ontarget").css("box-shadow","none");
+						$(".offtarget").css("box-shadow","none");
+						$(".department").css("box-shadow","none");
+						$(".strategic").css("box-shadow","none");
+
+						$('.strategic').buttonMarkup({ icon: "plus" });
+						$('.department').buttonMarkup({ icon: "plus" });
+						$('.offtarget').buttonMarkup({ icon: "plus" });
+						$('.ontarget').buttonMarkup({ icon: "plus" });
+						$('.measuring').buttonMarkup({ icon: "plus" });
+
+						o_selected = false;
+						d_selected = false;
+						m_selected = false;
+						of_selected = false;
+						s_selected = false;
 				});
 				// Select all goals in a dashboard
 				$(".category").click(function(e){
@@ -86,7 +101,17 @@
 					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				// Select all OnTarget
+				var o_selected = false;
 				$(".ontarget").click(function(e){
+					if(!o_selected) {
+						$(".ontarget").css("box-shadow","0 0 12px #38c");
+						$('.ontarget').buttonMarkup({ icon: "minus" });
+						o_selected = true;
+					} else {
+						$(".ontarget").css("box-shadow","none");
+						$('.ontarget').buttonMarkup({ icon: "plus" });
+						o_selected = false;
+					}
 					for(i in m){
 							if(m[i]["ontarget"] === 1) {
 								var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
@@ -100,7 +125,17 @@
 					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				// Select all OffTarget
+				var of_selected = false;
 				$(".offtarget").click(function(e){
+					if(!of_selected) {
+						$(".offtarget").css("box-shadow","0 0 12px #38c");
+						$('.offtarget').buttonMarkup({ icon: "minus" });
+						of_selected = true;
+					} else {
+						$(".offtarget").css("box-shadow","none");
+						$('.offtarget').buttonMarkup({ icon: "plus" });
+						of_selected = false;
+					}
 					for(i in m){
 						if(m[i]["ontarget"] === 0) {
 							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
@@ -114,9 +149,65 @@
 					$( ".goalcheck" ).checkboxradio( "refresh" );
 				});
 				// Select all Measuring Goals
+				var m_selected = false;
 				$(".measuring").click(function(e){
+					if(!m_selected) {
+						$(".measuring").css("box-shadow","0 0 12px #38c");
+						$('.measuring').buttonMarkup({ icon: "minus" });
+						m_selected = true;
+					} else {
+						$(".measuring").css("box-shadow","none");
+						$('.measuring').buttonMarkup({ icon: "plus" });
+						m_selected = false;
+					}
 					for(i in m){
 						if(m[i]["ontarget"] === 2) {
+							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
+							if(checked) {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							} else {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							}
+						}
+					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
+				});
+				// Select all Strategic Goals
+				var s_selected = false;
+				$(".strategic").click(function(e){
+					if(!s_selected) {
+						$(".strategic").css("box-shadow","0 0 12px #38c");
+						$('.strategic').buttonMarkup({ icon: "minus" });
+						s_selected = true;
+					} else {
+						$(".strategic").css("box-shadow","none");
+						$('.strategic').buttonMarkup({ icon: "plus" });
+						s_selected = false;
+					}
+					for(i in m){
+						if(m[i]["dashboard"].search("Strategic") > 0) {
+							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
+							if(checked) {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							} else {
+								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
+							}
+						}
+					}
+					$( ".goalcheck" ).checkboxradio( "refresh" );
+				});
+				// Select all Department
+				var d_selected = false;
+				$(".department").click(function(e){
+					if(!d_selected) {
+						$(".department").css("box-shadow","0 0 12px #38c");
+						d_selected = true;
+					} else {
+						$(".department").css("box-shadow","none");
+						d_selected = false;
+					}
+					for(i in m){
+						if(m[i]["dashboard"].search("Department") > 0) {
 							var checked = $( "input[type='checkbox']#"+m[i]["id"] ).is( ":checked" );
 							if(checked) {
 								$("input[type='checkbox']#"+m[i]["id"]).prop( "checked", true );
@@ -233,10 +324,17 @@
 								<div class="row">
 									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
 										<p>Quick Filters</p>
-										<a href="#" class="ontarget" data-role="button" data-icon="minus">Select On Target Goals</a>
-										<a href="#" class="offtarget" data-role="button" data-icon="minus">Select Off Target Goals</a>
-										<a href="#" class="measuring" data-role="button" data-icon="minus">Select Measuring Goals</a>
+										<a href="#" class="ontarget" data-role="button" data-icon="plus">Select On Target Goals</a>
+										<a href="#" class="offtarget" data-role="button" data-icon="plus">Select Off Target Goals</a>
+										<a href="#" class="measuring" data-role="button" data-icon="plus">Select Measuring Goals</a>
 									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" data-type="horizontal" data-role="controlgroup">
+										<p></p>
+										<a href="#" class="department" data-role="button" data-icon="plus">Select Department Goals</a>
+										<a href="#" class="strategic" data-role="button" data-icon="plus">Select Strategic Goals</a>
+								</div>
 								</div>
 								<div class="row">
 									<div class="col-md-12" id="blocks">
