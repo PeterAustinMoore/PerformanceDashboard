@@ -43,6 +43,9 @@
 
 		<script>
 			$(document).ready(function(){
+				var events_base = "https://peter.demo.socrata.com/resource/gm3z-5pxw.json";
+				data.setUpcomingEvents(events_base);
+
 				var m = cacheJS.get("data");
 				data.selectionContent(m);
 
@@ -265,24 +268,7 @@
                           <p>Dashboard</p>
                       </a>
                   </li>
-  								<li>
-  									<h1>August</h1>
-  									<table>
-  										<tr>
-  											<th>All People Trust Government</th>
-  										</tr>
-  										<tr>
-  											<td>
-  												<ol style="list-style-type:disc">
-  													<li>Performance Management Report</li>
-  													<li>Presentation: IT Reorganization Update</li>
-  													<li>Presentation: Infrastructure for All Update</li>
-  													<li>Presentation: Customer Service Program and Training Update</li>
-  													<li>Approval: HR Pay for Performance Model</li>
-  												</ol>
-  											</td>
-  										</tr>
-  									</table>
+  								<li id="events">
   								</li>
               </ul>
       	</div>
