@@ -333,7 +333,7 @@ data = {
                       if(goalArray[i]["unit"] == "percent") {
                         goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ goalArray[i]["target"][1] + "%";
                       }
-                      else if(goalInfo[i]["unit"] == "dollars"){
+                      else if(goalArray[i]["unit"] == "dollars"){
                         goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ " $" + goalArray[i]["target"][1];
                       }
                       else {
