@@ -443,11 +443,11 @@ data = {
           return x1 + x2;
       }
 
-      var tiles = '<div class="row d-flex align-items-end flex-column">';
+      var tiles = '<div class="row flex">';
       for(var i in goalArray) {
         goalTile=
         '<div class="col-sm-4"> \
-                  <div class="card p-2" id="measure-'+goalArray[i]["ontarget"]+'"> \
+                  <div class="card" id="measure-'+goalArray[i]["ontarget"]+'"> \
                     <div class="header"> \
                       <h4 class="title">'+goalArray[i]["name"]+'</h4> \
                     </div> \
@@ -468,7 +468,7 @@ data = {
                       if(goalArray[i]["unit"] == "percent") {
                         goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ goalArray[i]["target"][1] + "%";
                       }
-                      else if(goalInfo[i]["unit"] == "dollars"){
+                      else if(goalArray[i]["unit"] == "dollars"){
                         goalTile += goalArray[i]["target"] == null ? "Measuring" : "Target: " + goalArray[i]["target"][0]+ " $" + addCommas(goalArray[i]["target"][1]);
                       }
                       else {

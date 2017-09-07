@@ -24,11 +24,11 @@ text.ct-label {
   stroke-dasharray: 5px 4px;
 }
 #goalinfo {
-  height:312px;
+  /*height:312px;*/
   text-align: center;
 }
 #goalrow {
-  height:100px;
+  /*height:100px;*/
 }
 .numbers{
   text-align: center;

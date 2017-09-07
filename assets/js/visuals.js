@@ -166,7 +166,6 @@ visuals = {
         }, {
           seriesBarDistance: 0,
           reverseData: true,
-
           horizontalBars: true,
           axisX: {
             labelInterpolationFnc: function(value) {
