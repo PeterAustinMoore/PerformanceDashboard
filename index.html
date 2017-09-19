@@ -55,13 +55,15 @@
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
   <link href="assets/css/themify-icons.css" rel="stylesheet">
 
+	<!-- Settings -->
+	<script src="settings.js" type="text/javascript"></script>
 	<script>
 
     $(document).ready(function(){
 			// User settings
-			var goal_base = "https://performance.fultoncountyga.gov";
-			var budget_base = "https://performance.fultoncountyga.gov/resource/f4hd-3vk4.json?$select=sum(expenditures)%20as%20expenses,sum(current_budgeted)%20as%20budget&$group=type&$order=budget%20DESC";
-			var events_base = "https://peter.demo.socrata.com/resource/gm3z-5pxw.json";
+			var goal_base = settings.goal_base;
+			var budget_base = settings.budget_base;
+			var events_base = settings.events_base;
 
 			// Set the upcoming events data
 			data.setUpcomingEvents(events_base);
@@ -137,7 +139,7 @@
 
 	<!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 	<script src="assets/js/paper-dashboard.js"></script>
-	
+
 </head>
 <body>
 <!-- The Sidebar navigation -->

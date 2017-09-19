@@ -43,11 +43,14 @@
   <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
   <link href="../css/themify-icons.css" rel="stylesheet">
 
+	<!-- Settings -->
+	<script src="../../settings.js" type="text/javascript"></script>
+
 	<script>
     $(document).ready(function(){
-			var events_base = "https://peter.demo.socrata.com/resource/gm3z-5pxw.json";
+			var events_base = settings.events_base;
 			data.setUpcomingEvents(events_base);
-			
+
       var goalArray = cacheJS.get("newData");
       var onTargetArray = []
       for(i in goalArray){
